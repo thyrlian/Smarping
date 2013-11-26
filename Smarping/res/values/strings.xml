@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Smarping</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    
+    <!-- ActionBar -->
+    <string name="action_add">Add</string>
 
 </resources>
