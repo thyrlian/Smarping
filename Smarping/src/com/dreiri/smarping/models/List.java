@@ -15,7 +15,21 @@ public class List {
     }
     
     public Boolean remove(Item item) {
-        return items.remove(item);
+        for (Item itemInList : items) {
+            if (itemInList.equals(item)) {
+                return items.remove(itemInList);
+            }
+        }
+        return false;
+    }
+    
+    public Boolean remove(String name) {
+        for (Item itemInList : items) {
+            if (itemInList.name.equalsIgnoreCase(name.trim())) {
+                return items.remove(itemInList);
+            }
+        }
+        return false;
     }
     
     public int size() {
@@ -29,6 +43,15 @@ public class List {
     public boolean has(Item item) {
         for (Item itemInList: items) {
             if (itemInList.equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean has(String name) {
+        for (Item itemInList: items) {
+            if (itemInList.name.equalsIgnoreCase(name.trim())) {
                 return true;
             }
         }
