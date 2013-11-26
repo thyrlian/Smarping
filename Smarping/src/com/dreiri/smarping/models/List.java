@@ -2,6 +2,8 @@ package com.dreiri.smarping.models;
 
 import java.util.ArrayList;
 
+import com.dreiri.smarping.utils.Action;
+
 public class List {
     
     private ArrayList<Item> items;
@@ -10,26 +12,21 @@ public class List {
         items = new ArrayList<Item>();
     }
     
-    public Boolean add(Item item) {
+    public boolean add(Item item) {
         return items.add(item);
     }
     
-    public Boolean remove(Item item) {
-        for (Item itemInList : items) {
-            if (itemInList.equals(item)) {
-                return items.remove(itemInList);
+    public boolean remove(Item item) {
+        return iterateThruItemsAndPerformActionWhenFind(item, new Action() {
+            @Override
+            public boolean take(Item item) {
+                return items.remove(item);
             }
-        }
-        return false;
+        });
     }
     
-    public Boolean remove(String name) {
-        for (Item itemInList : items) {
-            if (itemInList.name.equalsIgnoreCase(name.trim())) {
-                return items.remove(itemInList);
-            }
-        }
-        return false;
+    public boolean remove(String name) {
+        return remove(new Item(name));
     }
     
     public int size() {
@@ -41,18 +38,22 @@ public class List {
     }
     
     public boolean has(Item item) {
-        for (Item itemInList: items) {
-            if (itemInList.equals(item)) {
+        return iterateThruItemsAndPerformActionWhenFind(item, new Action() {
+            @Override
+            public boolean take(Item item) {
                 return true;
             }
-        }
-        return false;
+        });
     }
     
     public boolean has(String name) {
+        return has(new Item(name));
+    }
+    
+    private boolean iterateThruItemsAndPerformActionWhenFind(Item item, Action action) {
         for (Item itemInList: items) {
-            if (itemInList.name.equalsIgnoreCase(name.trim())) {
-                return true;
+            if (itemInList.equals(item)) {
+                return action.take(itemInList);
             }
         }
         return false;
