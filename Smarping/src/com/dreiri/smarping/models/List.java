@@ -2,8 +2,6 @@ package com.dreiri.smarping.models;
 
 import java.util.ArrayList;
 
-import com.dreiri.smarping.utils.Action;
-
 public class List {
     
     private ArrayList<Item> items;
@@ -17,9 +15,9 @@ public class List {
     }
     
     public boolean remove(Item item) {
-        return iterateThruItemsAndPerformActionWhenFind(item, new Action() {
+        return findItemAndExecuteAction(item, new Callback() {
             @Override
-            public boolean take(Item item) {
+            public boolean execute(Item item) {
                 return items.remove(item);
             }
         });
@@ -38,9 +36,9 @@ public class List {
     }
     
     public boolean has(Item item) {
-        return iterateThruItemsAndPerformActionWhenFind(item, new Action() {
+        return findItemAndExecuteAction(item, new Callback() {
             @Override
-            public boolean take(Item item) {
+            public boolean execute(Item item) {
                 return true;
             }
         });
@@ -50,13 +48,17 @@ public class List {
         return has(new Item(name));
     }
     
-    private boolean iterateThruItemsAndPerformActionWhenFind(Item item, Action action) {
+    private boolean findItemAndExecuteAction(Item item, Callback callback) {
         for (Item itemInList: items) {
             if (itemInList.equals(item)) {
-                return action.take(itemInList);
+                return callback.execute(itemInList);
             }
         }
         return false;
+    }
+    
+    private interface Callback {
+        public boolean execute(Item item);
     }
     
 }
