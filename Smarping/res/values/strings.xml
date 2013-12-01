@@ -5,5 +5,8 @@
     
     <!-- ActionBar -->
     <string name="action_add">Add</string>
+    
+    <!-- Adding -->
+    <string name="edit_text_add">Add new item…</string>
 
 </resources>

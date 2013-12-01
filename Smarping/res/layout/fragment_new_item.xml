@@ -1,34 +1,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentListRow"
+    android:id="@+id/fragmentNewItem"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight" >
+    android:layout_height="wrap_content" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/list_row_margin_to_other"
         android:layout_marginLeft="@dimen/list_row_margin_to_side"
         android:layout_marginRight="@dimen/list_row_margin_to_side"
         android:layout_marginTop="@dimen/list_row_margin_to_other"
-        android:background="@drawable/bg_card"
+        android:background="@drawable/bg_card_normal"
         android:orientation="horizontal" >
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
-            android:id="@+id/textViewItemName"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editTextNewItem"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:hint="@string/edit_text_add"
             android:paddingBottom="@dimen/list_row_padding_to_border"
             android:paddingLeft="@dimen/list_row_padding_between_contents"
             android:paddingTop="@dimen/list_row_padding_to_border"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
         
     </LinearLayout>
 
