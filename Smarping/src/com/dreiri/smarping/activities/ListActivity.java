@@ -1,5 +1,6 @@
 package com.dreiri.smarping.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,11 +14,15 @@ import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 
 public class ListActivity extends Activity {
+    
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        ActionBar actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(true);
         List list = new List();
         list.add(new Item("鸡蛋"));
         list.add(new Item("牛奶"));
@@ -28,7 +33,16 @@ public class ListActivity extends Activity {
         list.add(new Item("饮料"));
         list.add(new Item("酒水"));
         list.add(new Item("寿司"));
-        ListView listView = (ListView) findViewById(R.id.listView);
+        list.add(new Item("篮球"));
+        list.add(new Item("电脑"));
+        list.add(new Item("手机"));
+        list.add(new Item("家电"));
+        list.add(new Item("极客装备"));
+        list.add(new Item("天"));
+        list.add(new Item("地"));
+        list.add(new Item("人"));
+        list.add(new Item("和"));
+        listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new ItemAdapter(this, list));
     }
     
@@ -42,6 +56,10 @@ public class ListActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+//                listView.setSelectionAfterHeaderView();
+                listView.smoothScrollToPosition(0);
+                break;
             case R.id.action_add:
                 Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
                 break;
