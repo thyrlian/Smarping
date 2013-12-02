@@ -37,9 +37,22 @@ public class ListTest extends AndroidTestCase {
         assertTrue(list.remove(" bread "));
         assertEquals(sizeOriginal - 2, list.size());
     }
+    
+    public void testClear() {
+        List anotherList = new List();
+        anotherList.add(new Item("Gadget"));
+        assertFalse(anotherList.isEmpty());
+        anotherList.clear();
+        assertTrue(anotherList.isEmpty());
+    }
 
     public void testSize() {
         assertEquals(3, list.size());
+    }
+    
+    public void testIsEmpty() {
+        assertFalse(list.isEmpty());
+        assertTrue(new List().isEmpty());
     }
 
     public void testGet() {
@@ -47,7 +60,7 @@ public class ListTest extends AndroidTestCase {
         list.add(item);
         assertEquals(item, list.get(sizeOriginal));
     }
-
+    
     public void testHas() {
         assertTrue(list.has(new Item("Milk")));
         assertTrue(list.has(new Item(" milk ")));

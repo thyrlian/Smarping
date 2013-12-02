@@ -27,8 +27,20 @@ public class List {
         return remove(new Item(name));
     }
     
+    public void clear() {
+        items.clear();
+    }
+    
     public int size() {
         return items.size();
+    }
+    
+    public boolean isEmpty() {
+        if (size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public Item get(int index) {
