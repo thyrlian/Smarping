@@ -26,6 +26,16 @@ public class ListTest extends AndroidTestCase {
         assertEquals(sizeOriginal + 1, list.size());
         assertTrue(list.has(item));
     }
+    
+    public void testAddDuplication() {
+        Item item = new Item("Milk");
+        assertTrue(list.has(item));
+        try {
+            list.add(item);
+        } catch (List.AlreadyExists e) {
+            assertEquals("Can not add given item, it is already in the list.", e.getMessage());
+        }
+    }
 
     public void testRemove() {
         assertFalse(list.remove(new Item("Egg")));
@@ -39,11 +49,11 @@ public class ListTest extends AndroidTestCase {
     }
     
     public void testClear() {
-        List anotherList = new List();
-        anotherList.add(new Item("Gadget"));
-        assertFalse(anotherList.isEmpty());
-        anotherList.clear();
-        assertTrue(anotherList.isEmpty());
+        assertFalse(list.isEmpty());
+        list.clear();
+        assertTrue(list.isEmpty());
+        list.add(new Item("Gadget"));
+        assertFalse(list.isEmpty());
     }
 
     public void testSize() {

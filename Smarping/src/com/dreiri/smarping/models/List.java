@@ -11,6 +11,9 @@ public class List {
     }
     
     public boolean add(Item item) {
+        if (has(item)) {
+            throw new AlreadyExists("Can not add given item, it is already in the list.");
+        }
         return items.add(item);
     }
     
@@ -71,6 +74,16 @@ public class List {
     
     private interface Callback {
         public boolean execute(Item item);
+    }
+    
+    public class AlreadyExists extends RuntimeException {
+        
+        private static final long serialVersionUID = 1L;
+        
+        public AlreadyExists(String message) {
+            super(message);
+        }
+        
     }
     
 }
