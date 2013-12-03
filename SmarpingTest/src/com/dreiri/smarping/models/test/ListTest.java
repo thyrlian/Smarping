@@ -2,6 +2,7 @@ package com.dreiri.smarping.models.test;
 
 import android.test.AndroidTestCase;
 
+import com.dreiri.smarping.exceptions.AlreadyExists;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 
@@ -32,7 +33,7 @@ public class ListTest extends AndroidTestCase {
         assertTrue(list.has(item));
         try {
             list.add(item);
-        } catch (List.AlreadyExists e) {
+        } catch (AlreadyExists e) {
             assertEquals("Can not add given item, it is already in the list.", e.getMessage());
         }
     }

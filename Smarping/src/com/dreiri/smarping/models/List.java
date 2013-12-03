@@ -2,6 +2,8 @@ package com.dreiri.smarping.models;
 
 import java.util.ArrayList;
 
+import com.dreiri.smarping.exceptions.AlreadyExists;
+
 public class List {
     
     private ArrayList<Item> items;
@@ -74,16 +76,6 @@ public class List {
     
     private interface Callback {
         public boolean execute(Item item);
-    }
-    
-    public class AlreadyExists extends RuntimeException {
-        
-        private static final long serialVersionUID = 1L;
-        
-        public AlreadyExists(String message) {
-            super(message);
-        }
-        
     }
     
 }
