@@ -67,9 +67,11 @@ public class ListTest extends AndroidTestCase {
     }
 
     public void testGet() {
+        Item firstItem = new Item("Eggs");
         Item item = new Item("Beer");
         list.add(item);
-        assertEquals(item, list.get(sizeOriginal));
+        assertTrue(firstItem.equals(list.get(sizeOriginal)));
+        assertEquals(item, list.get(0));
     }
     
     public void testHas() {

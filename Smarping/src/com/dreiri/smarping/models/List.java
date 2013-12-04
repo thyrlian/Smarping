@@ -12,11 +12,15 @@ public class List {
         items = new ArrayList<Item>();
     }
     
-    public boolean add(Item item) {
+    public void add(Item item) {
         if (has(item)) {
             throw new AlreadyExists("Can not add given item, it is already in the list.");
         }
-        return items.add(item);
+        items.add(0, item);
+    }
+    
+    public void add(String name) {
+        add(new Item(name));
     }
     
     public boolean remove(Item item) {
