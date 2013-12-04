@@ -23,6 +23,18 @@ public class List {
         add(new Item(name));
     }
     
+    public void add(Item...items) {
+        for (Item item : items) {
+            add(item);
+        }
+    }
+    
+    public void add(String...names) {
+        for (String name : names) {
+            add(name);
+        }
+    }
+    
     public boolean remove(Item item) {
         return findItemAndExecuteAction(item, new Callback() {
             @Override

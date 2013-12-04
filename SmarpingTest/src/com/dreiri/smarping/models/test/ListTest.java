@@ -37,6 +37,16 @@ public class ListTest extends AndroidTestCase {
             assertEquals("Can not add given item, it is already in the list.", e.getMessage());
         }
     }
+    
+    public void testAddVarargs() {
+        list.add("Computer", "Girl", "Basketball", "Gadget", "Muscle");
+        assertEquals(sizeOriginal + 5, list.size());
+        assertTrue(list.has("Muscle"));
+        List anotherList = new List();
+        anotherList.add(new Item("Money"), new Item("Sex"), new Item("Love"));
+        assertEquals(3, anotherList.size());
+        assertTrue(anotherList.has("Sex"));
+    }
 
     public void testRemove() {
         assertFalse(list.remove(new Item("Egg")));
