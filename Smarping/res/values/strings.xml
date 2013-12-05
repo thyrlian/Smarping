@@ -10,6 +10,7 @@
     <string name="edit_text_add">Add new item…</string>
     
     <!-- Toast -->
+    <string name="toast_null_value">Can not create item with empty name.</string>
     <string name="toast_already_exists">Sorry, this item already exists.</string>
 
 </resources>
