@@ -39,7 +39,7 @@ public class ListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                listView.smoothScrollToPosition(0);
+                scrollToTop();
                 break;
             case R.id.action_add:
                 Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
@@ -48,6 +48,10 @@ public class ListActivity extends Activity {
                 break;
             }
             return true;
+    }
+
+    public void scrollToTop() {
+        listView.smoothScrollToPosition(0);
     }
 
 }
