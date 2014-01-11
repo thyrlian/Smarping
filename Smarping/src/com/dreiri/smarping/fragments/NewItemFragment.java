@@ -20,6 +20,7 @@ import com.dreiri.smarping.exceptions.AlreadyExists;
 import com.dreiri.smarping.exceptions.NullValue;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
+import com.dreiri.smarping.persistence.PersistenceManager;
 
 public class NewItemFragment extends Fragment {
 
@@ -66,6 +67,8 @@ public class NewItemFragment extends Fragment {
             try {
                 Item item = new Item(itemName);
                 list.add(item);
+                PersistenceManager persistenceManager = new PersistenceManager(getActivity());
+                persistenceManager.saveList(list);
             } catch (NullValue e) {
                 Toast.makeText(getActivity(), R.string.toast_null_value, Toast.LENGTH_SHORT).show();
             } catch (AlreadyExists e) {

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.adapters.ItemAdapter;
 import com.dreiri.smarping.models.List;
+import com.dreiri.smarping.persistence.PersistenceManager;
 
 public class ListActivity extends Activity {
     
@@ -24,6 +25,8 @@ public class ListActivity extends Activity {
         setContentView(R.layout.activity_list);
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
+        PersistenceManager persistenceManager = new PersistenceManager(this);
+        list = persistenceManager.readList();
         listView = (ListView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this, list);
         listView.setAdapter(itemAdapter);
