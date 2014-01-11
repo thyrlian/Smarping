@@ -6,10 +6,12 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.dreiri.smarping.models.List;
+import com.dreiri.smarping.utils.Callback;
 
 public class PersistenceManager {
     
     private SharedPreferences prefs;
+    private Editor editor;
     private String appIdentifier = "Smarping";
     private String keyTotalNumber = appIdentifier + "_total_number";
     private String keyItem = appIdentifier + "_item_";
@@ -40,22 +42,37 @@ public class PersistenceManager {
         return list;
     }
     
-    private void saveString(String key, String value) {
-        Editor editor = prefs.edit();
-        editor.putString(key, value);
+    private void modifyValues(Callback callback) {
+        this.editor = prefs.edit();
+        callback.execute();
         editor.apply();
     }
     
-    private void saveInt(String key, int value) {
-        Editor editor = prefs.edit();
-        editor.putInt(key, value);
-        editor.apply();
+    private void saveString(final String key, final String value) {
+        modifyValues(new Callback() {
+            @Override
+            public void execute() {
+                editor.putString(key, value);
+            }
+        });
+    }
+    
+    private void saveInt(final String key, final int value) {
+        modifyValues(new Callback() {
+            @Override
+            public void execute() {
+                editor.putInt(key, value);
+            }
+        });
     }
     
     private void clearAllSavedItems() {
-        Editor editor = prefs.edit();
-        editor.clear();
-        editor.apply();
+        modifyValues(new Callback() {
+            @Override
+            public void execute() {
+                editor.clear();
+            }
+        });
     }
 
     private int getNumberOfItems() {
