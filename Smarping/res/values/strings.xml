@@ -4,7 +4,7 @@
     <string name="app_name">Smarping</string>
     
     <!-- ActionBar -->
-    <string name="action_add">Add</string>
+    <string name="action_delete">Delete</string>
     
     <!-- Adding -->
     <string name="edit_text_add">Add new item…</string>

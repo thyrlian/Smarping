@@ -44,7 +44,7 @@ public class ListActivity extends Activity {
             case android.R.id.home:
                 scrollToTop();
                 break;
-            case R.id.action_add:
+            case R.id.action_delete:
                 Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
                 break;
             default:
