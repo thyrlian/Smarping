@@ -67,6 +67,23 @@ public class ItemAdapter extends BaseAdapter {
         Item item = list.get(position);
         viewHolder.textViewItemName.setText(item.name);
         viewHolder.checkBox.setChecked(checkBoxStates.get(position));
+        
+        viewHolder.textViewItemName.setOnClickListener(new OnClickListener() {
+            static final int DOUBLE_CLICK_DELAY = 300;
+            long lastClickTime = 0;
+            long thisClickTime;
+            @Override
+            public void onClick(View v) {
+                thisClickTime = System.currentTimeMillis();
+                if (thisClickTime - lastClickTime < DOUBLE_CLICK_DELAY) {
+                    lastClickTime = 0;
+                    // do the job
+                } else {
+                    lastClickTime = thisClickTime;
+                }
+            }
+        });
+        
         viewHolder.checkBox.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -74,6 +91,7 @@ public class ItemAdapter extends BaseAdapter {
 				checkBoxStates.set(position, checkBox.isChecked());
 			}
 		});
+        
         return convertView;
     }
 
