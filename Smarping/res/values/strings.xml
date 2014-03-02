@@ -2,13 +2,17 @@
 <resources>
 
     <string name="app_name">Smarping</string>
-    
+
     <!-- ActionBar -->
     <string name="action_delete">Delete</string>
-    
+
     <!-- Adding -->
     <string name="edit_text_add">Add new item…</string>
-    
+
+    <!-- Dialog -->
+    <string name="btn_pos">OK</string>
+    <string name="btn_neg">Cancel</string>
+
     <!-- Toast -->
     <string name="toast_null_value">Can not create item with empty name.</string>
     <string name="toast_already_exists">Sorry, this item already exists.</string>

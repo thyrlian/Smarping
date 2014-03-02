@@ -28,7 +28,7 @@ public class ListActivity extends Activity {
         PersistenceManager persistenceManager = new PersistenceManager(this);
         list = persistenceManager.readList();
         listView = (ListView) findViewById(R.id.listView);
-        itemAdapter = new ItemAdapter(this, list);
+        itemAdapter = new ItemAdapter(this, this.getFragmentManager(), list);
         listView.setAdapter(itemAdapter);
     }
     

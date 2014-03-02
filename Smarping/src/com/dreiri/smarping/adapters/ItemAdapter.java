@@ -2,6 +2,7 @@ package com.dreiri.smarping.adapters;
 
 import java.util.ArrayList;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.dreiri.smarping.R;
+import com.dreiri.smarping.fragments.EditItemDialogFragment;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 
 public class ItemAdapter extends BaseAdapter {
     
     private List list;
+    private FragmentManager fragmentManager;
     private LayoutInflater inflater;
     private ViewHolder viewHolder;
     private ArrayList<Boolean> checkBoxStates = new ArrayList<Boolean>();
@@ -27,8 +30,9 @@ public class ItemAdapter extends BaseAdapter {
         CheckBox checkBox;
     }
     
-    public ItemAdapter(Context context, List list) {
+    public ItemAdapter(Context context, FragmentManager fragmentManager, List list) {
         this.inflater = LayoutInflater.from(context);
+        this.fragmentManager = fragmentManager;
         this.list = list;
         for (int i = 0; i < getCount(); i++) {
         	checkBoxStates.add(false);
@@ -64,7 +68,7 @@ public class ItemAdapter extends BaseAdapter {
         for (int i = checkBoxStates.size(); i < list.size(); i++) {
         	checkBoxStates.add(0, false);
 		}
-        Item item = list.get(position);
+        final Item item = list.get(position);
         viewHolder.textViewItemName.setText(item.name);
         viewHolder.checkBox.setChecked(checkBoxStates.get(position));
         
@@ -78,6 +82,8 @@ public class ItemAdapter extends BaseAdapter {
                 if (thisClickTime - lastClickTime < DOUBLE_CLICK_DELAY) {
                     lastClickTime = 0;
                     // do the job
+                    EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(item.name);
+                    editItemDialogFragment.show(fragmentManager, "item");
                 } else {
                     lastClickTime = thisClickTime;
                 }
