@@ -37,21 +37,18 @@ public class EditItemDialogFragment extends DialogFragment {
         editTextItemName.setText(itemName);
         editTextItemName.setSelection(editTextItemName.length());
 
-        builder.setView(view)
-                .setPositiveButton(R.string.btn_pos, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        Toast.makeText(getActivity(), editTextItemName.getText().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton(R.string.btn_neg, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        builder.setView(view);
+        builder.setPositiveButton(R.string.btn_pos, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+            }
+        });
+        builder.setNegativeButton(R.string.btn_neg, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
 
         return builder.create();
     }
