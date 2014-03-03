@@ -2,6 +2,7 @@ package com.dreiri.smarping.adapters;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,9 +31,9 @@ public class ItemAdapter extends BaseAdapter {
         CheckBox checkBox;
     }
     
-    public ItemAdapter(Context context, FragmentManager fragmentManager, List list) {
+    public ItemAdapter(Context context, List list) {
         this.inflater = LayoutInflater.from(context);
-        this.fragmentManager = fragmentManager;
+        this.fragmentManager = ((Activity) context).getFragmentManager();
         this.list = list;
         for (int i = 0; i < getCount(); i++) {
         	checkBoxStates.add(false);
