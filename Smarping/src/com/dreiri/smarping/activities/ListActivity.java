@@ -12,8 +12,9 @@ import com.dreiri.smarping.R;
 import com.dreiri.smarping.adapters.ItemAdapter;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
+import com.dreiri.smarping.utils.EditItemDialogListener;
 
-public class ListActivity extends Activity {
+public class ListActivity extends Activity implements EditItemDialogListener {
     
     private ListView listView;
     public List list = new List();
@@ -55,6 +56,15 @@ public class ListActivity extends Activity {
 
     public void scrollToTop() {
         listView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void onFinishEditDialog(int position, String text) {
+        PersistenceManager persistenceManager = new PersistenceManager(this);
+        String appIdentifier = "Smarping";
+        String keyItem = appIdentifier + "_item_";
+        persistenceManager.updateItem(keyItem + String.valueOf(position), text);
+        itemAdapter.notifyDataSetChanged();
     }
 
 }

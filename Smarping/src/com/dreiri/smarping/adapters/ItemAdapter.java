@@ -83,7 +83,7 @@ public class ItemAdapter extends BaseAdapter {
                 if (thisClickTime - lastClickTime < DOUBLE_CLICK_DELAY) {
                     lastClickTime = 0;
                     // do the job
-                    EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(item.name);
+                    EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
                     editItemDialogFragment.show(fragmentManager, "item");
                 } else {
                     lastClickTime = thisClickTime;

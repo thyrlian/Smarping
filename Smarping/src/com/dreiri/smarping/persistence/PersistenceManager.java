@@ -42,6 +42,26 @@ public class PersistenceManager {
         return list;
     }
     
+    public void updateItem(final String key, final String value) {
+        modifyValues(new Callback() {
+            @Override
+            public void execute() {
+                editor.putString(key, value);
+            }
+        });
+    }
+    
+    public void removeItems(final String[] keys) {
+        modifyValues(new Callback() {
+            @Override
+            public void execute() {
+                for (String key : keys) {
+                    editor.remove(key);
+                }
+            }
+        });
+    }
+    
     private void modifyValues(Callback callback) {
         this.editor = prefs.edit();
         callback.execute();
