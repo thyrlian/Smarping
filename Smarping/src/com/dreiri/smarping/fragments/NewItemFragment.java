@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -53,10 +52,10 @@ public class NewItemFragment extends Fragment {
     private class ListUpdateTask implements Runnable {
 
         private List list;
-        private BaseAdapter adapter;
+        private ItemAdapter adapter;
         private String itemName;
 
-        public ListUpdateTask(List list, BaseAdapter adapter, String itemName) {
+        public ListUpdateTask(List list, ItemAdapter adapter, String itemName) {
             this.list = list;
             this.adapter = adapter;
             this.itemName = itemName;
@@ -74,7 +73,7 @@ public class NewItemFragment extends Fragment {
             } catch (AlreadyExists e) {
                 Toast.makeText(getActivity(), R.string.toast_already_exists, Toast.LENGTH_SHORT).show();
             }
-            adapter.notifyDataSetChanged();
+            adapter.refreshWithNewData(list);
         }
 
     }

@@ -102,4 +102,9 @@ public class ItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void refreshWithNewData(List list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
 }

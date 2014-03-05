@@ -64,7 +64,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         String appIdentifier = "Smarping";
         String keyItem = appIdentifier + "_item_";
         persistenceManager.updateItem(keyItem + String.valueOf(position), text);
-        itemAdapter.notifyDataSetChanged();
+        itemAdapter.refreshWithNewData(persistenceManager.readList());
     }
 
 }
