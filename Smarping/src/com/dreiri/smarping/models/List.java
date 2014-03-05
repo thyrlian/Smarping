@@ -37,7 +37,7 @@ public class List {
     }
 
     public boolean modify(int index, String newItemName) {
-        if (index > 0 && index < items.size()) {
+        if (index >= 0 && index < items.size()) {
             items.set(index, new Item(newItemName));
             return true;
         } else {
