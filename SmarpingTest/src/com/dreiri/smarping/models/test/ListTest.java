@@ -51,10 +51,12 @@ public class ListTest extends AndroidTestCase {
 
     public void testModifyByIndexSucceed() {
         int sizeOriginal = list.size();
+        int index = 0;
         String newItemName = "Vegetables";
-        list.modify(0, newItemName);
+        String oldItemName = list.get(index).name;
+        list.modify(index, newItemName);
         assertTrue(list.has(newItemName));
-        assertFalse(list.has("Eggs"));
+        assertFalse(list.has(oldItemName));
         assertEquals(sizeOriginal, list.size());
     }
 
