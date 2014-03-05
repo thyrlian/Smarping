@@ -1,3 +1,4 @@
+
 package com.dreiri.smarping.models.test;
 
 import android.test.AndroidTestCase;
@@ -7,10 +8,10 @@ import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 
 public class ListTest extends AndroidTestCase {
-    
+
     List list;
     int sizeOriginal;
-    
+
     protected void setUp() throws Exception {
         super.setUp();
         list = new List();
@@ -27,7 +28,7 @@ public class ListTest extends AndroidTestCase {
         assertEquals(sizeOriginal + 1, list.size());
         assertTrue(list.has(item));
     }
-    
+
     public void testAddDuplication() {
         Item item = new Item("Milk");
         assertTrue(list.has(item));
@@ -37,7 +38,7 @@ public class ListTest extends AndroidTestCase {
             assertEquals("Can not add given item, it is already in the list.", e.getMessage());
         }
     }
-    
+
     public void testAddVarargs() {
         list.add("Computer", "Girl", "Basketball", "Gadget", "Muscle");
         assertEquals(sizeOriginal + 5, list.size());
@@ -46,6 +47,43 @@ public class ListTest extends AndroidTestCase {
         anotherList.add(new Item("Money"), new Item("Sex"), new Item("Love"));
         assertEquals(3, anotherList.size());
         assertTrue(anotherList.has("Sex"));
+    }
+
+    public void testModifyByIndexSucceed() {
+        int sizeOriginal = list.size();
+        String newItemName = "Vegetables";
+        list.modify(1, newItemName);
+        assertTrue(list.has(newItemName));
+        assertFalse(list.has("Milk"));
+        assertEquals(sizeOriginal, list.size());
+    }
+
+    public void testModifyByNameSucceed() {
+        int sizeOriginal = list.size();
+        String oldItemName = "Bread";
+        String newItemName = "Vegetables";
+        list.modify(oldItemName, newItemName);
+        assertTrue(list.has(newItemName));
+        assertFalse(list.has(oldItemName));
+        assertEquals(sizeOriginal, list.size());
+    }
+
+    public void testModifyByIndexFail() {
+        int sizeOriginal = list.size();
+        String newItemName = "Vegetables";
+        list.modify(sizeOriginal, newItemName);
+        assertFalse(list.has(newItemName));
+        assertEquals(sizeOriginal, list.size());
+    }
+
+    public void testModifyByNameFail() {
+        int sizeOriginal = list.size();
+        String oldItemName = "Bread";
+        String newItemName = "Vegetables";
+        list.modify(oldItemName + "?", newItemName);
+        assertTrue(list.has(oldItemName));
+        assertFalse(list.has(newItemName));
+        assertEquals(sizeOriginal, list.size());
     }
 
     public void testRemove() {
@@ -58,7 +96,7 @@ public class ListTest extends AndroidTestCase {
         assertTrue(list.remove(" bread "));
         assertEquals(sizeOriginal - 2, list.size());
     }
-    
+
     public void testClear() {
         assertFalse(list.isEmpty());
         list.clear();
@@ -70,7 +108,7 @@ public class ListTest extends AndroidTestCase {
     public void testSize() {
         assertEquals(3, list.size());
     }
-    
+
     public void testIsEmpty() {
         assertFalse(list.isEmpty());
         assertTrue(new List().isEmpty());
@@ -83,7 +121,7 @@ public class ListTest extends AndroidTestCase {
         assertTrue(firstItem.equals(list.get(sizeOriginal)));
         assertEquals(item, list.get(0));
     }
-    
+
     public void testHas() {
         assertTrue(list.has(new Item("Milk")));
         assertTrue(list.has(new Item(" milk ")));

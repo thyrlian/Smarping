@@ -36,12 +36,17 @@ public class List {
         }
     }
 
-    public void modify(int index, String newItemName) {
-        items.set(index, new Item(newItemName));
+    public boolean modify(int index, String newItemName) {
+        if (index > 0 && index < items.size()) {
+            items.set(index, new Item(newItemName));
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void modify(String name, final String newItemName) {
-        findItemAndExecuteAction(new Item(name), new Callback() {
+    public boolean modify(String name, final String newItemName) {
+        return findItemAndExecuteAction(new Item(name), new Callback() {
             @Override
             public boolean execute(Item item, int index) {
                 items.set(index, new Item(newItemName));
