@@ -1,3 +1,4 @@
+
 package com.dreiri.smarping.activities;
 
 import android.app.ActionBar;
@@ -15,7 +16,7 @@ import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.utils.EditItemDialogListener;
 
 public class ListActivity extends Activity implements EditItemDialogListener {
-    
+
     private ListView listView;
     public List list = new List();
     public ItemAdapter itemAdapter;
@@ -32,7 +33,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         itemAdapter = new ItemAdapter(this, list);
         listView.setAdapter(itemAdapter);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_list, menu);
@@ -50,8 +51,8 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 break;
             default:
                 break;
-            }
-            return true;
+        }
+        return true;
     }
 
     public void scrollToTop() {
@@ -60,11 +61,10 @@ public class ListActivity extends Activity implements EditItemDialogListener {
 
     @Override
     public void onFinishEditDialog(int position, String text) {
+        list.modify(position, text);
+        itemAdapter.refreshWithNewData(list);
         PersistenceManager persistenceManager = new PersistenceManager(this);
-        String appIdentifier = "Smarping";
-        String keyItem = appIdentifier + "_item_";
-        persistenceManager.updateItem(keyItem + String.valueOf(position), text);
-        itemAdapter.refreshWithNewData(persistenceManager.readList());
+        persistenceManager.saveList(list);
     }
 
 }

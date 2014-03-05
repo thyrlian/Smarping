@@ -66,16 +66,16 @@ public class NewItemFragment extends Fragment {
             try {
                 Item item = new Item(itemName);
                 list.add(item);
-                PersistenceManager persistenceManager = new PersistenceManager(getActivity());
-                persistenceManager.saveList(list);
             } catch (NullValue e) {
                 Toast.makeText(getActivity(), R.string.toast_null_value, Toast.LENGTH_SHORT).show();
             } catch (AlreadyExists e) {
                 Toast.makeText(getActivity(), R.string.toast_already_exists, Toast.LENGTH_SHORT).show();
             }
             adapter.refreshWithNewData(list);
+            PersistenceManager persistenceManager = new PersistenceManager(getActivity());
+            persistenceManager.saveList(list);
         }
 
     }
-    
+
 }
