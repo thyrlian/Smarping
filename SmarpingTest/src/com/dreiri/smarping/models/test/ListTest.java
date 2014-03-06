@@ -88,6 +88,22 @@ public class ListTest extends AndroidTestCase {
         assertEquals(sizeOriginal, list.size());
     }
 
+    public void testModifyByIndexDuplication() {
+        try {
+            list.modify(0, "Milk");
+        } catch (AlreadyExists e) {
+            assertEquals("Can not modify with given item, it is already in the list.", e.getMessage());
+        }
+    }
+
+    public void testModifyByNameDuplication() {
+        try {
+            list.modify("Eggs", "Eggs");
+        } catch (AlreadyExists e) {
+            assertEquals("Can not modify with given item, it is already in the list.", e.getMessage());
+        }
+    }
+
     public void testRemove() {
         assertFalse(list.remove(new Item("Egg")));
         assertEquals(sizeOriginal, list.size());
@@ -131,6 +147,12 @@ public class ListTest extends AndroidTestCase {
         assertTrue(list.has(" bread "));
         assertTrue(list.has("Bread"));
         assertFalse(list.has("Brot"));
+    }
+
+    public void testFind() {
+        assertEquals(2, list.find("Eggs"));
+        assertEquals(0, list.find(new Item("Bread")));
+        assertEquals(-1, list.find(new Item("Bacon")));
     }
 
 }

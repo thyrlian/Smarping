@@ -38,8 +38,12 @@ public class List {
 
     public boolean modify(int index, String newItemName) {
         if (index >= 0 && index < items.size()) {
-            items.set(index, new Item(newItemName));
-            return true;
+            if (!has(newItemName)) {
+                items.set(index, new Item(newItemName));
+                return true;
+            } else {
+                throw new AlreadyExists("Can not modify with given item, it is already in the list.");
+            }
         } else {
             return false;
         }
@@ -49,8 +53,12 @@ public class List {
         return findItemAndExecuteAction(new Item(name), new Callback() {
             @Override
             public boolean execute(Item item, int index) {
-                items.set(index, new Item(newItemName));
-                return true;
+                if (!has(newItemName)) {
+                    items.set(index, new Item(newItemName));
+                    return true;
+                } else {
+                    throw new AlreadyExists("Can not modify with given item, it is already in the list.");
+                }
             }
         });
     }
@@ -99,6 +107,19 @@ public class List {
 
     public boolean has(String name) {
         return has(new Item(name));
+    }
+
+    public int find(Item item) {
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).equals(item)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    public int find(String name) {
+        return find(new Item(name));
     }
 
     private boolean findItemAndExecuteAction(Item item, Callback callback) {
