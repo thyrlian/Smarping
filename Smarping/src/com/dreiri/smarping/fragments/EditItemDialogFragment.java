@@ -79,7 +79,7 @@ public class EditItemDialogFragment extends DialogFragment {
 
     private void updateItem() {
         String newItemName = editTextItemName.getText().toString();
-        if (!newItemName.equalsIgnoreCase(itemName)) {
+        if (!newItemName.equals(itemName)) {
             EditItemDialogListener listener = (EditItemDialogListener) getActivity();
             listener.onFinishEditDialog(itemPos, newItemName);
         }
