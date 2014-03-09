@@ -2,6 +2,7 @@
 package com.dreiri.smarping.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.dreiri.smarping.exceptions.AlreadyExists;
 
@@ -74,6 +75,30 @@ public class List {
 
     public boolean remove(String name) {
         return remove(new Item(name));
+    }
+
+    public void remove(Item... items) {
+        for (Item item : items) {
+            remove(item);
+        }
+    }
+
+    public void remove(String... names) {
+        for (String name : names) {
+            remove(name);
+        }
+    }
+
+    public String remove(int index) {
+        Item removedItem = items.remove(index);
+        return removedItem.name;
+    }
+
+    public void remove(int... indexes) {
+        Arrays.sort(indexes);
+        for (int i = indexes.length - 1; i >= 0; i--) {
+            items.remove(indexes[i]);
+        }
     }
 
     public void clear() {
