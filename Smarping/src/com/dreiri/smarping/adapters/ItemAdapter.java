@@ -127,4 +127,10 @@ public class ItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void refreshWithNewDataAndResetCheckBoxes(List list) {
+        this.list = list;
+        resetCheckBoxStates();
+        notifyDataSetChanged();
+    }
+
 }

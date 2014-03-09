@@ -51,7 +51,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             case R.id.action_delete:
                 int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
                 list.remove(checkedIndexes);
-                itemAdapter.refreshWithNewData(list);
+                itemAdapter.refreshWithNewDataAndResetCheckBoxes(list);
                 PersistenceManager persistenceManager = new PersistenceManager(this);
                 persistenceManager.saveList(list);
                 break;
