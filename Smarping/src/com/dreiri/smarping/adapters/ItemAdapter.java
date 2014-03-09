@@ -36,9 +36,7 @@ public class ItemAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
         this.fragmentManager = ((Activity) context).getFragmentManager();
         this.list = list;
-        for (int i = 0; i < getCount(); i++) {
-            checkBoxStates.add(false);
-        }
+        resetCheckBoxStates();
     }
 
     @Override
@@ -84,7 +82,6 @@ public class ItemAdapter extends BaseAdapter {
                 thisClickTime = System.currentTimeMillis();
                 if (thisClickTime - lastClickTime < DOUBLE_CLICK_DELAY) {
                     lastClickTime = 0;
-                    // do the job
                     EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
                     editItemDialogFragment.show(fragmentManager, "item");
                 } else {
@@ -102,6 +99,26 @@ public class ItemAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    public int[] getIndexesOfCheckedItems() {
+        ArrayList<Integer> checkedItemsIndexes = new ArrayList<Integer>();
+        for (int i = 0; i < checkBoxStates.size(); i++) {
+            if (checkBoxStates.get(i)) {
+                checkedItemsIndexes.add(i);
+            }
+        }
+        int[] checkedIndexes = new int[checkedItemsIndexes.size()];
+        for (int i = 0; i < checkedItemsIndexes.size(); i++) {
+            checkedIndexes[i] = checkedItemsIndexes.get(i);
+        }
+        return checkedIndexes;
+    }
+
+    private void resetCheckBoxStates() {
+        for (int i = 0; i < getCount(); i++) {
+            checkBoxStates.add(false);
+        }
     }
 
     public void refreshWithNewData(List list) {
