@@ -100,11 +100,14 @@ public class List {
 
     public void remove(int... indexes) {
         Arrays.sort(indexes);
-        for (int i = indexes.length - 1; i >= 0; i--) {
-            int index = indexes[i];
-            if (index >= 0 && index < items.size()) {
-                items.remove(index);
+        ArrayList<Integer> indices = new ArrayList<Integer>();
+        for (int index : indexes) {
+            if (index >= 0 && index < items.size() && !indices.contains(index)) {
+                indices.add(index);
             }
+        }
+        for (int i = indices.size() - 1; i >= 0; i--) {
+            items.remove(indices.get(i).intValue());
         }
     }
 

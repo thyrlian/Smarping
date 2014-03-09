@@ -174,7 +174,7 @@ public class ListTest extends AndroidTestCase {
     public void testRemoveByIndexesVarargs() {
         list.add("Goku", "Bardock", "Gohan", "Frieza", "Vegeta", "Nappa");
         int sizeNow = list.size();
-        list.remove(sizeNow + 1, -1, 8, 3, 1);
+        list.remove(sizeNow + 1, -1, 8, 3, 3, 8, 1);
         assertEquals(sizeNow - 3, list.size());
         assertFalse(list.has("Vegeta"));
         assertFalse(list.has("Gohan"));
