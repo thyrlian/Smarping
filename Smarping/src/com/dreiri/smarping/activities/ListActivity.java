@@ -49,7 +49,11 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 scrollToTop();
                 break;
             case R.id.action_delete:
-                Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+                int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
+                list.remove(checkedIndexes);
+                itemAdapter.refreshWithNewData(list);
+                PersistenceManager persistenceManager = new PersistenceManager(this);
+                persistenceManager.saveList(list);
                 break;
             default:
                 break;
