@@ -123,6 +123,8 @@ public class ListTest extends AndroidTestCase {
     }
 
     public void testRemoveByIndex() {
+        assertNull(list.remove(-1));
+        assertEquals(sizeOriginal, list.size());
         assertNull(list.remove(3));
         assertEquals(sizeOriginal, list.size());
         assertEquals("Eggs", list.remove(2));
@@ -131,6 +133,52 @@ public class ListTest extends AndroidTestCase {
         assertEquals("Bread", list.remove(0));
         assertEquals(sizeOriginal - 2, list.size());
         assertFalse(list.has("Bread"));
+    }
+
+    public void testRemoveByItemsVarargs() {
+        list.remove(new Item("Egg"));
+        assertEquals(sizeOriginal, list.size());
+        assertFalse(list.has("Egg"));
+        list.remove(new Item("Eggs"));
+        assertEquals(sizeOriginal - 1, list.size());
+        assertFalse(list.has("Eggs"));
+        list.add("Goku", "Bardock", "Gohan", "Frieza", "Vegeta", "Nappa");
+        int sizeNow = list.size();
+        list.remove(new Item("Bardock"), new Item("Freezer"), new Item("Gohan"), new Item("Nappa"));
+        assertEquals(sizeNow - 3, list.size());
+        assertFalse(list.has("Bardock"));
+        assertFalse(list.has("Gohan"));
+        assertFalse(list.has("Nappa"));
+        assertTrue(list.has("Frieza"));
+        assertFalse(list.has("Freezer"));
+    }
+
+    public void testRemoveByNamesVarargs() {
+        list.remove("Egg");
+        assertEquals(sizeOriginal, list.size());
+        assertFalse(list.has("Egg"));
+        list.remove("Eggs");
+        assertEquals(sizeOriginal - 1, list.size());
+        assertFalse(list.has("Eggs"));
+        list.add("Goku", "Bardock", "Gohan", "Frieza", "Vegeta", "Nappa");
+        int sizeNow = list.size();
+        list.remove("Nappa", "Freezer", "Bardock", "Gohan");
+        assertEquals(sizeNow - 3, list.size());
+        assertFalse(list.has("Bardock"));
+        assertFalse(list.has("Gohan"));
+        assertFalse(list.has("Nappa"));
+        assertTrue(list.has("Frieza"));
+        assertFalse(list.has("Freezer"));
+    }
+
+    public void testRemoveByIndexesVarargs() {
+        list.add("Goku", "Bardock", "Gohan", "Frieza", "Vegeta", "Nappa");
+        int sizeNow = list.size();
+        list.remove(sizeNow + 1, -1, 8, 3, 1);
+        assertEquals(sizeNow - 3, list.size());
+        assertFalse(list.has("Vegeta"));
+        assertFalse(list.has("Gohan"));
+        assertFalse(list.has("Eggs"));
     }
 
     public void testClear() {
