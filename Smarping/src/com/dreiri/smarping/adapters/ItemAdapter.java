@@ -116,6 +116,7 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     private void resetCheckBoxStates() {
+        checkBoxStates.clear();
         for (int i = 0; i < getCount(); i++) {
             checkBoxStates.add(false);
         }
