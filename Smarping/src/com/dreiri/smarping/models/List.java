@@ -90,8 +90,12 @@ public class List {
     }
 
     public String remove(int index) {
-        Item removedItem = items.remove(index);
-        return removedItem.name;
+        if (index >= 0 && index < items.size()) {
+            Item removedItem = items.remove(index);
+            return removedItem.name;
+        } else {
+            return null;
+        }
     }
 
     public void remove(int... indexes) {

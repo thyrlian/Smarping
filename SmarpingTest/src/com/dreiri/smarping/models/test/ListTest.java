@@ -104,17 +104,31 @@ public class ListTest extends AndroidTestCase {
         }
     }
 
-    public void testRemove() {
+    public void testRemoveByItem() {
         assertFalse(list.remove(new Item("Egg")));
         assertEquals(sizeOriginal, list.size());
         assertFalse(list.has("Egg"));
-        assertFalse(list.remove("Breast"));
-        assertEquals(sizeOriginal, list.size());
-        assertFalse(list.has("Breast"));
         assertTrue(list.remove(new Item("Eggs")));
         assertEquals(sizeOriginal - 1, list.size());
         assertFalse(list.has("Eggs"));
+    }
+
+    public void testRemoveByName() {
+        assertFalse(list.remove("Breast"));
+        assertEquals(sizeOriginal, list.size());
+        assertFalse(list.has("Breast"));
         assertTrue(list.remove(" bread "));
+        assertEquals(sizeOriginal - 1, list.size());
+        assertFalse(list.has("Bread"));
+    }
+
+    public void testRemoveByIndex() {
+        assertNull(list.remove(3));
+        assertEquals(sizeOriginal, list.size());
+        assertEquals("Eggs", list.remove(2));
+        assertEquals(sizeOriginal - 1, list.size());
+        assertFalse(list.has("Eggs"));
+        assertEquals("Bread", list.remove(0));
         assertEquals(sizeOriginal - 2, list.size());
         assertFalse(list.has("Bread"));
     }
