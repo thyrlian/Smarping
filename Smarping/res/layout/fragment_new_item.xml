@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:hint="@string/edit_text_add"
             android:paddingBottom="@dimen/list_row_padding_to_border"
             android:paddingLeft="@dimen/list_row_padding_between_contents"
