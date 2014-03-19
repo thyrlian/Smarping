@@ -26,6 +26,7 @@
             android:paddingBottom="@dimen/list_row_padding_to_border"
             android:paddingLeft="@dimen/list_row_padding_between_contents"
             android:paddingTop="@dimen/list_row_padding_to_border"
+            android:drawableRight="@drawable/ic_action_microphone"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         
     </LinearLayout>
