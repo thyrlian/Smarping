@@ -1,11 +1,17 @@
 
 package com.dreiri.smarping.activities;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,10 +22,13 @@ import com.dreiri.smarping.exceptions.NullValue;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.utils.EditItemDialogListener;
+import com.dreiri.smarping.views.DrawableRightOnTouchListener;
 
 public class ListActivity extends Activity implements EditItemDialogListener {
 
+    public static final int REQUEST_SPEECH = 101;
     private ListView listView;
+    private EditText editTextNewItem;
     public List list = new List();
     public ItemAdapter itemAdapter;
 
@@ -34,6 +43,16 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         listView = (ListView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this, list);
         listView.setAdapter(itemAdapter);
+        editTextNewItem = (EditText) findViewById(R.id.editTextNewItem);
+        editTextNewItem.setOnTouchListener(new DrawableRightOnTouchListener(editTextNewItem) {
+            @Override
+            public boolean onDrawableTouch(MotionEvent event) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                startActivityForResult(intent, REQUEST_SPEECH);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -59,6 +78,20 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_SPEECH) {
+                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (text.size() > 0) {
+                    editTextNewItem.setText(text.get(0));
+                    editTextNewItem.setSelection(editTextNewItem.getText().length());
+                }
+            }
+        }
     }
 
     public void scrollToTop() {
