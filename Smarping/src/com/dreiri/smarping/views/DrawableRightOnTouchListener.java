@@ -10,7 +10,7 @@ import android.widget.TextView;
 public abstract class DrawableRightOnTouchListener implements OnTouchListener {
 
     private Drawable drawable;
-    private int extraTapArea = 10;
+    private int extraSpace = 10;
 
     public DrawableRightOnTouchListener(TextView view) {
         super();
@@ -28,7 +28,11 @@ public abstract class DrawableRightOnTouchListener implements OnTouchListener {
             int x = (int) event.getX();
             int y = (int) event.getY();
             Rect bounds = drawable.getBounds();
-            if (x >= (v.getWidth() - bounds.width() - extraTapArea) && x <= (v.getWidth() - v.getPaddingRight() + extraTapArea) && y >= (v.getPaddingTop() - extraTapArea) && y <= (v.getHeight() - v.getPaddingBottom() + extraTapArea)) {
+            int minX = v.getWidth() - v.getPaddingRight() - bounds.width();
+            int maxX = v.getWidth() - v.getPaddingRight();
+            int minY = v.getPaddingTop() - extraSpace;
+            int maxY = v.getHeight() - v.getPaddingBottom() + extraSpace;
+            if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
                 return onDrawableTouch(event);
             }
         }
