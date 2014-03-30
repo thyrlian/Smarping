@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,12 +13,17 @@ import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallback
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 
 public class LocationService implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private final static long UPDATE_INTERVAL = 10000;
+    private final static long FASTEST_UPDATE_INTERVAL = 5000;
     private Context context;
     private LocationClient locationClient;
+    private LocationRequest locationRequest;
     private Location location;
 
     public static boolean checkAvailability(Context context) {
@@ -35,9 +39,17 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
         if (checkAvailability(context)) {
             this.context = context;
             this.locationClient = new LocationClient(context, this, this);
+            setLocationRequest();
         } else {
             throw new LocationServicesNotAvailable("Location Services are not available");
         }
+    }
+
+    private void setLocationRequest() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
     }
 
     public void connect() {
@@ -50,6 +62,17 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
 
     public Location getLastLocation() {
         return locationClient.getLastLocation();
+    }
+
+    public void requestLocationUpdates() {
+        locationClient.requestLocationUpdates(locationRequest, this);
+    }
+
+    public void stopUpdates() {
+        if (locationClient.isConnected()) {
+            locationClient.removeLocationUpdates(this);
+        }
+        locationClient.disconnect();
     }
 
     @Override
@@ -80,21 +103,6 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     public void onLocationChanged(Location location) {
         Log.i("Smarping", "Location is changed");
         this.location = location;
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.i("Smarping", String.format("Status of %1$s is changed: %2$d", provider, status));
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.i("Smarping", String.format("Provider: %s is enabled", provider));
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.i("Smarping", String.format("Provider: %s is disabled", provider));
     }
 
 }
