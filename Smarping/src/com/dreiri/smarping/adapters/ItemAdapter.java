@@ -1,4 +1,3 @@
-
 package com.dreiri.smarping.adapters;
 
 import java.util.ArrayList;

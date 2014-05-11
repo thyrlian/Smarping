@@ -1,4 +1,3 @@
-
 package com.dreiri.smarping.models;
 
 import java.util.ArrayList;

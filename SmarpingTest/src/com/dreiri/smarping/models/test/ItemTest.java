@@ -6,7 +6,7 @@ import com.dreiri.smarping.exceptions.NullValue;
 import com.dreiri.smarping.models.Item;
 
 public class ItemTest extends AndroidTestCase {
-    
+
     Item itemA;
     Item itemB;
     Item itemC;
@@ -25,7 +25,7 @@ public class ItemTest extends AndroidTestCase {
         assertTrue(itemA.equals(itemC));
         assertFalse(itemA.equals(itemD));
     }
-    
+
     public void testCreateItemWithEmptyValue() {
         try {
             new Item(" ");

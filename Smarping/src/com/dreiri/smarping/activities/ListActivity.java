@@ -1,4 +1,3 @@
-
 package com.dreiri.smarping.activities;
 
 import java.util.ArrayList;
@@ -66,18 +65,18 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                scrollToTop();
-                break;
-            case R.id.action_delete:
-                int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
-                list.remove(checkedIndexes);
-                itemAdapter.refreshWithNewDataAndResetCheckBoxes(list);
-                PersistenceManager persistenceManager = new PersistenceManager(this);
-                persistenceManager.saveList(list);
-                break;
-            default:
-                break;
+        case android.R.id.home:
+            scrollToTop();
+            break;
+        case R.id.action_delete:
+            int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
+            list.remove(checkedIndexes);
+            itemAdapter.refreshWithNewDataAndResetCheckBoxes(list);
+            PersistenceManager persistenceManager = new PersistenceManager(this);
+            persistenceManager.saveList(list);
+            break;
+        default:
+            break;
         }
         return true;
     }

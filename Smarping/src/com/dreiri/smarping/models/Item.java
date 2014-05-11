@@ -6,9 +6,9 @@ import android.os.Parcelable;
 import com.dreiri.smarping.exceptions.NullValue;
 
 public class Item implements Parcelable {
-    
+
     public String name;
-    
+
     public Item(String name) {
         name = name.trim();
         if (name.isEmpty()) {
@@ -17,11 +17,11 @@ public class Item implements Parcelable {
             this.name = name;
         }
     }
-    
+
     public Item(Parcel orig) {
         new Item(orig.readString());
     }
-    
+
     public boolean equals(Item item) {
         return name.equalsIgnoreCase(item.name);
     }
@@ -35,7 +35,7 @@ public class Item implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
     }
-    
+
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
 
         @Override
@@ -48,5 +48,5 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
-    
+
 }

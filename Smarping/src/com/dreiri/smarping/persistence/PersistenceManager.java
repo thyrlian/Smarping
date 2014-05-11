@@ -9,17 +9,17 @@ import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.utils.Callback;
 
 public class PersistenceManager {
-    
+
     private SharedPreferences prefs;
     private Editor editor;
     private String appIdentifier = "Smarping";
     private String keyTotalNumber = appIdentifier + "_total_number";
     private String keyItem = appIdentifier + "_item_";
-    
+
     public PersistenceManager(Context context) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
-    
+
     public void saveList(List list) {
         clearAllSavedItems();
         setNumberOfItems(list.size());
@@ -28,7 +28,7 @@ public class PersistenceManager {
             saveString(key, list.get(i).name);
         }
     }
-    
+
     public List readList() {
         List list = new List();
         int totalNum = getNumberOfItems();
@@ -41,7 +41,7 @@ public class PersistenceManager {
         }
         return list;
     }
-    
+
     public void updateItem(final String key, final String value) {
         modifyValues(new Callback() {
             @Override
@@ -50,7 +50,7 @@ public class PersistenceManager {
             }
         });
     }
-    
+
     public void removeItems(final String[] keys) {
         modifyValues(new Callback() {
             @Override
@@ -61,13 +61,13 @@ public class PersistenceManager {
             }
         });
     }
-    
+
     private void modifyValues(Callback callback) {
         this.editor = prefs.edit();
         callback.execute();
         editor.apply();
     }
-    
+
     private void saveString(final String key, final String value) {
         modifyValues(new Callback() {
             @Override
@@ -76,7 +76,7 @@ public class PersistenceManager {
             }
         });
     }
-    
+
     private void saveInt(final String key, final int value) {
         modifyValues(new Callback() {
             @Override
@@ -85,7 +85,7 @@ public class PersistenceManager {
             }
         });
     }
-    
+
     private void clearAllSavedItems() {
         modifyValues(new Callback() {
             @Override
@@ -102,5 +102,5 @@ public class PersistenceManager {
     private void setNumberOfItems(int numberOfItems) {
         saveInt(keyTotalNumber, numberOfItems);
     }
-    
+
 }

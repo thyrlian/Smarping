@@ -1,4 +1,3 @@
-
 package com.dreiri.smarping.fragments;
 
 import android.app.Fragment;

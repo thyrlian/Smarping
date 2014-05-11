@@ -1,4 +1,3 @@
-
 package com.dreiri.smarping.models.test;
 
 import android.test.AndroidTestCase;
