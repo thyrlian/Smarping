@@ -32,6 +32,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     private EditText editTextNewItem;
     public List list = new List();
     public ItemAdapter itemAdapter;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.activity_list, menu);
+        updateMenu();
         return true;
     }
 
@@ -72,6 +75,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
             list.remove(checkedIndexes);
             itemAdapter.refreshWithNewDataAndResetCheckBoxes(list);
+            item.setVisible(false);
             PersistenceManager persistenceManager = new PersistenceManager(this);
             persistenceManager.saveList(list);
             break;
@@ -79,6 +83,18 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             break;
         }
         return true;
+    }
+
+    public void updateMenu() {
+        int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
+        MenuItem item = menu.findItem(R.id.action_delete);
+        if (item.isVisible() && checkedIndexes.length < 1) {
+            item.setVisible(false);
+            this.invalidateOptionsMenu();
+        } else if (!item.isVisible() && checkedIndexes.length >= 1) {
+            item.setVisible(true);
+            this.invalidateOptionsMenu();
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.dreiri.smarping.adapters;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.dreiri.smarping.R;
+import com.dreiri.smarping.activities.ListActivity;
 import com.dreiri.smarping.fragments.EditItemDialogFragment;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
@@ -21,6 +21,7 @@ import com.dreiri.smarping.models.List;
 public class ItemAdapter extends BaseAdapter {
 
     private List list;
+    private ListActivity activity;
     private FragmentManager fragmentManager;
     private LayoutInflater inflater;
     private ViewHolder viewHolder;
@@ -33,7 +34,8 @@ public class ItemAdapter extends BaseAdapter {
 
     public ItemAdapter(Context context, List list) {
         this.inflater = LayoutInflater.from(context);
-        this.fragmentManager = ((Activity) context).getFragmentManager();
+        this.activity = (ListActivity) context;
+        this.fragmentManager = activity.getFragmentManager();
         this.list = list;
         resetCheckBoxStates();
     }
@@ -94,6 +96,7 @@ public class ItemAdapter extends BaseAdapter {
             public void onClick(View v) {
                 CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
                 checkBoxStates.set(position, checkBox.isChecked());
+                activity.updateMenu();
             }
         });
 
