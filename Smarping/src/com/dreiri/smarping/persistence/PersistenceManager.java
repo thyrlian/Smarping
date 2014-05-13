@@ -94,8 +94,7 @@ public class PersistenceManager {
         modifyValues(new Callback() {
             @Override
             public void execute() {
-                int totalItems = getNumberOfItems();
-                for (int i = 0; i < totalItems; i++) {
+                for (int i = 0; i < getNumberOfItems(); i++) {
                     String key = keyItem + i;
                     editor.remove(key);
                 }
