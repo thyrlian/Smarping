@@ -68,7 +68,7 @@ public class PersistenceManager {
         editor.apply();
     }
 
-    private void saveString(final String key, final String value) {
+    public void saveString(final String key, final String value) {
         modifyValues(new Callback() {
             @Override
             public void execute() {
@@ -77,7 +77,7 @@ public class PersistenceManager {
         });
     }
 
-    private void saveInt(final String key, final int value) {
+    public void saveInt(final String key, final int value) {
         modifyValues(new Callback() {
             @Override
             public void execute() {
@@ -86,11 +86,20 @@ public class PersistenceManager {
         });
     }
 
+    public String getString(String key) {
+        return prefs.getString(key, null);
+    }
+
     private void clearAllSavedItems() {
         modifyValues(new Callback() {
             @Override
             public void execute() {
-                editor.clear();
+                int totalItems = getNumberOfItems();
+                for (int i = 0; i < totalItems; i++) {
+                    String key = keyItem + i;
+                    editor.remove(key);
+                }
+                editor.remove(keyTotalNumber);
             }
         });
     }
