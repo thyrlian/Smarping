@@ -9,10 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="20dip"
-        android:paddingLeft="15dip"
+        android:paddingBottom="40dip"
         android:paddingTop="40dip"
-        android:text="Login"
+        android:text="@string/title_login"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
@@ -20,8 +19,8 @@
         android:id="@+id/txtPsw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dip"
-        android:text="Password:"
+        android:paddingLeft="20dip"
+        android:text="@string/txt_verify_password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -31,7 +30,7 @@
         android:layout_marginBottom="20dip"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
-        android:layout_marginTop="20dip"
+        android:layout_marginTop="10dip"
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -46,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dip"
-        android:layout_marginTop="20dip"
+        android:layout_marginTop="15dip"
         android:gravity="center"
-        android:text="Log in" />
+        android:text="@string/btn_login" />
 
 </LinearLayout>

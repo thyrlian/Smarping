@@ -12,9 +12,19 @@
     <!-- Dialog -->
     <string name="btn_pos">OK</string>
     <string name="btn_neg">Cancel</string>
+    
+    <!-- Authentication -->
+    <string name="title_signup">Registration</string>
+    <string name="title_login">Login</string>
+    <string name="txt_create_password">Please enter your new password:</string>
+    <string name="txt_verify_password">Password:</string>
+    <string name="hint_password">New Password</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="btn_login">Log In</string>
 
     <!-- Toast -->
     <string name="toast_null_value">Can not create item with empty name.</string>
     <string name="toast_already_exists">Sorry, this item already exists.</string>
+    <string name="toast_wrong_password">Wrong password, please try again.</string>
 
 </resources>

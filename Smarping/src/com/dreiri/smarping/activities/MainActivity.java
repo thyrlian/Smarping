@@ -24,28 +24,11 @@ public class MainActivity extends Activity {
         if (Authenticator.isNewUser()) {
             setContentView(R.layout.activity_authenticate_register);
             Button btnCreate = (Button) findViewById(R.id.btnCreate);
-            btnCreate.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    createPassword();
-                    startActivity(new Intent(MainActivity.this, ListActivity.class));
-                    finish();
-                }
-            });
+            btnCreate.setOnClickListener(new SignupOnClickListener());
         } else {
             setContentView(R.layout.activity_authenticate_login);
             Button btnLogin = (Button) findViewById(R.id.btnLogin);
-            btnLogin.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (verifyPassword()) {
-                        startActivity(new Intent(MainActivity.this, ListActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Wrong password, please try again", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            btnLogin.setOnClickListener(new LoginOnClickListener());
         }
     }
 
@@ -66,4 +49,25 @@ public class MainActivity extends Activity {
         return Authenticator.isPasswordMatching(password);
     }
 
+    private class SignupOnClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            createPassword();
+            startActivity(new Intent(MainActivity.this, ListActivity.class));
+            finish();
+        }
+    }
+
+    private class LoginOnClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (verifyPassword()) {
+                startActivity(new Intent(MainActivity.this, ListActivity.class));
+                finish();
+            } else {
+                String toast_wrong_password = getResources().getString(R.string.toast_wrong_password);
+                Toast.makeText(MainActivity.this, toast_wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
