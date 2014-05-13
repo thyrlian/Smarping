@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,11 +26,17 @@ public class MainActivity extends Activity {
         if (Authenticator.isNewUser()) {
             setContentView(R.layout.activity_authenticate_register);
             Button btnCreate = (Button) findViewById(R.id.btnCreate);
+            EditText edtPsw = (EditText) findViewById(R.id.edtPsw);
+            btnCreate.setEnabled(false);
             btnCreate.setOnClickListener(new SignupOnClickListener());
+            edtPsw.addTextChangedListener(new PasswordTextWatcher(btnCreate));
         } else {
             setContentView(R.layout.activity_authenticate_login);
             Button btnLogin = (Button) findViewById(R.id.btnLogin);
+            EditText edtPsw = (EditText) findViewById(R.id.edtPsw);
+            btnLogin.setEnabled(false);
             btnLogin.setOnClickListener(new LoginOnClickListener());
+            edtPsw.addTextChangedListener(new PasswordTextWatcher(btnLogin));
         }
     }
 
@@ -70,4 +78,31 @@ public class MainActivity extends Activity {
             }
         }
     }
+
+    private class PasswordTextWatcher implements TextWatcher {
+
+        private Button button;
+
+        public PasswordTextWatcher(Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (button.isEnabled() && s.length() < 3) {
+                button.setEnabled(false);
+            } else if (!button.isEnabled() && s.length() >= 3) {
+                button.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    }
+
 }
