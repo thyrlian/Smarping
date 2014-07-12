@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.activities.ListActivity;
 import com.dreiri.smarping.adapters.ItemAdapter;
-import com.dreiri.smarping.exceptions.AlreadyExists;
-import com.dreiri.smarping.exceptions.NullValue;
+import com.dreiri.smarping.exceptions.AlreadyExistsException;
+import com.dreiri.smarping.exceptions.NullValueException;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
@@ -65,9 +65,9 @@ public class NewItemFragment extends Fragment {
             try {
                 Item item = new Item(itemName);
                 list.add(item);
-            } catch (NullValue e) {
+            } catch (NullValueException e) {
                 Toast.makeText(getActivity(), R.string.toast_null_value, Toast.LENGTH_SHORT).show();
-            } catch (AlreadyExists e) {
+            } catch (AlreadyExistsException e) {
                 Toast.makeText(getActivity(), R.string.toast_already_exists, Toast.LENGTH_SHORT).show();
             }
             adapter.refreshWithNewData(list);

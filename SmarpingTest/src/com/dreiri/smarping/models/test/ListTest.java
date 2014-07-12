@@ -2,7 +2,7 @@ package com.dreiri.smarping.models.test;
 
 import android.test.AndroidTestCase;
 
-import com.dreiri.smarping.exceptions.AlreadyExists;
+import com.dreiri.smarping.exceptions.AlreadyExistsException;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 
@@ -33,7 +33,7 @@ public class ListTest extends AndroidTestCase {
         assertTrue(list.has(item));
         try {
             list.add(item);
-        } catch (AlreadyExists e) {
+        } catch (AlreadyExistsException e) {
             assertEquals("Can not add given item, it is already in the list.", e.getMessage());
         }
     }
@@ -90,7 +90,7 @@ public class ListTest extends AndroidTestCase {
     public void testModifyByIndexDuplication() {
         try {
             list.modify(0, "Milk");
-        } catch (AlreadyExists e) {
+        } catch (AlreadyExistsException e) {
             assertEquals("Can not modify with given item, it is already in the list.", e.getMessage());
         }
     }
@@ -98,7 +98,7 @@ public class ListTest extends AndroidTestCase {
     public void testModifyByNameDuplication() {
         try {
             list.modify("Eggs", "Eggs");
-        } catch (AlreadyExists e) {
+        } catch (AlreadyExistsException e) {
             assertEquals("Can not modify with given item, it is already in the list.", e.getMessage());
         }
     }

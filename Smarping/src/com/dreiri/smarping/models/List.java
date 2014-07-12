@@ -3,7 +3,7 @@ package com.dreiri.smarping.models;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.dreiri.smarping.exceptions.AlreadyExists;
+import com.dreiri.smarping.exceptions.AlreadyExistsException;
 
 public class List {
 
@@ -15,7 +15,7 @@ public class List {
 
     public void add(Item item) {
         if (has(item)) {
-            throw new AlreadyExists("Can not add given item, it is already in the list.");
+            throw new AlreadyExistsException("Can not add given item, it is already in the list.");
         }
         items.add(0, item);
     }
@@ -42,7 +42,7 @@ public class List {
                 items.set(index, new Item(newItemName));
                 return true;
             } else {
-                throw new AlreadyExists("Can not modify with given item, it is already in the list.");
+                throw new AlreadyExistsException("Can not modify with given item, it is already in the list.");
             }
         } else {
             return false;
@@ -57,7 +57,7 @@ public class List {
                     items.set(index, new Item(newItemName));
                     return true;
                 } else {
-                    throw new AlreadyExists("Can not modify with given item, it is already in the list.");
+                    throw new AlreadyExistsException("Can not modify with given item, it is already in the list.");
                 }
             }
         });

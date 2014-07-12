@@ -3,7 +3,7 @@ package com.dreiri.smarping.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.dreiri.smarping.exceptions.NullValue;
+import com.dreiri.smarping.exceptions.NullValueException;
 
 public class Item implements Parcelable {
 
@@ -12,7 +12,7 @@ public class Item implements Parcelable {
     public Item(String name) {
         name = name.trim();
         if (name.isEmpty()) {
-            throw new NullValue("Can not create item with empty name.");
+            throw new NullValueException("Can not create item with empty name.");
         } else {
             this.name = name;
         }

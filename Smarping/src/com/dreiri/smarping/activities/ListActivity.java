@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.adapters.ItemAdapter;
-import com.dreiri.smarping.exceptions.AlreadyExists;
-import com.dreiri.smarping.exceptions.NullValue;
+import com.dreiri.smarping.exceptions.AlreadyExistsException;
+import com.dreiri.smarping.exceptions.NullValueException;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.utils.EditItemDialogListener;
@@ -121,9 +121,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     public void onFinishEditDialog(int position, String text) {
         try {
             list.modify(position, text);
-        } catch (NullValue e) {
+        } catch (NullValueException e) {
             Toast.makeText(this, R.string.toast_null_value, Toast.LENGTH_SHORT).show();
-        } catch (AlreadyExists e) {
+        } catch (AlreadyExistsException e) {
             Toast.makeText(this, R.string.toast_already_exists, Toast.LENGTH_SHORT).show();
         }
         itemAdapter.refreshWithNewData(list);

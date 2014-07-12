@@ -7,7 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dreiri.smarping.exceptions.LocationServicesNotAvailable;
+import com.dreiri.smarping.exceptions.LocationServicesNotAvailableException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -41,7 +41,7 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
             this.locationClient = new LocationClient(context, this, this);
             setLocationRequest();
         } else {
-            throw new LocationServicesNotAvailable("Location Services are not available");
+            throw new LocationServicesNotAvailableException("Location Services are not available");
         }
     }
 

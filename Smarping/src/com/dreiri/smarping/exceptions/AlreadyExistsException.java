@@ -1,10 +1,10 @@
 package com.dreiri.smarping.exceptions;
 
-public class NullValue extends RuntimeException {
+public class AlreadyExistsException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public NullValue(String message) {
+    public AlreadyExistsException(String message) {
         super(message);
     }
 

@@ -2,7 +2,7 @@ package com.dreiri.smarping.models.test;
 
 import android.test.AndroidTestCase;
 
-import com.dreiri.smarping.exceptions.NullValue;
+import com.dreiri.smarping.exceptions.NullValueException;
 import com.dreiri.smarping.models.Item;
 
 public class ItemTest extends AndroidTestCase {
@@ -29,7 +29,7 @@ public class ItemTest extends AndroidTestCase {
     public void testCreateItemWithEmptyValue() {
         try {
             new Item(" ");
-        } catch (NullValue e) {
+        } catch (NullValueException e) {
             assertEquals("Can not create item with empty name.", e.getMessage());
         }
     }
