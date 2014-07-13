@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -19,10 +20,13 @@ import android.widget.Toast;
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.adapters.ItemAdapter;
 import com.dreiri.smarping.exceptions.AlreadyExistsException;
+import com.dreiri.smarping.exceptions.LocationServicesNotAvailableException;
 import com.dreiri.smarping.exceptions.NullValueException;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
+import com.dreiri.smarping.services.LocationService;
 import com.dreiri.smarping.utils.EditItemDialogListener;
+import com.dreiri.smarping.utils.ResultCallback;
 import com.dreiri.smarping.views.DrawableRightOnTouchListener;
 
 public class ListActivity extends Activity implements EditItemDialogListener {
@@ -33,6 +37,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     public List list = new List();
     public ItemAdapter itemAdapter;
     private Menu menu;
+    private Location location = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,13 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 return false;
             }
         });
+        setLocation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setLocation();
     }
 
     @Override
@@ -129,6 +141,24 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         itemAdapter.refreshWithNewData(list);
         PersistenceManager persistenceManager = new PersistenceManager(this);
         persistenceManager.saveList(list);
+    }
+
+    private void setLocation() {
+        try {
+            LocationService locationService = new LocationService(this, new ResultCallback<Location>() {
+                @Override
+                public void execute(Location location) {
+                    ListActivity.this.location = location;
+                }
+            });
+            locationService.connect();
+        } catch (LocationServicesNotAvailableException e) {
+            this.location = null;
+        }
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
 }

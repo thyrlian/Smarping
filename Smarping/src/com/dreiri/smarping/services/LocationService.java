@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.dreiri.smarping.exceptions.LocationServicesNotAvailableException;
+import com.dreiri.smarping.utils.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -24,7 +25,7 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     private Context context;
     private LocationClient locationClient;
     private LocationRequest locationRequest;
-    private Location location;
+    private ResultCallback<Location> callback = null;
 
     public static boolean checkAvailability(Context context) {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -43,6 +44,11 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
         } else {
             throw new LocationServicesNotAvailableException("Location Services are not available");
         }
+    }
+
+    public LocationService(Context context, ResultCallback<Location> callback) {
+        this(context);
+        this.callback = callback;
     }
 
     private void setLocationRequest() {
@@ -68,6 +74,18 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
         locationClient.requestLocationUpdates(locationRequest, this);
     }
 
+    public void requestLocationUpdatesAndDisconnect() {
+        if (callback != null) {
+            locationClient.requestLocationUpdates(locationRequest, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    callback.execute(location);
+                    disconnect();
+                }
+            });
+        }
+    }
+
     public void stopUpdates() {
         if (locationClient.isConnected()) {
             locationClient.removeLocationUpdates(this);
@@ -91,7 +109,7 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.i("Smarping", "Connected to Location Services");
-        location = getLastLocation();
+        requestLocationUpdatesAndDisconnect();
     }
 
     @Override
@@ -102,7 +120,6 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     @Override
     public void onLocationChanged(Location location) {
         Log.i("Smarping", "Location is changed");
-        this.location = location;
     }
 
 }
