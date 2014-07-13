@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.dreiri.smarping.models.List;
-import com.dreiri.smarping.utils.Callback;
+import com.dreiri.smarping.utils.SimpleCallback;
 
 public class PersistenceManager {
 
@@ -43,7 +43,7 @@ public class PersistenceManager {
     }
 
     public void updateItem(final String key, final String value) {
-        modifyValues(new Callback() {
+        modifyValues(new SimpleCallback() {
             @Override
             public void execute() {
                 editor.putString(key, value);
@@ -52,7 +52,7 @@ public class PersistenceManager {
     }
 
     public void removeItems(final String[] keys) {
-        modifyValues(new Callback() {
+        modifyValues(new SimpleCallback() {
             @Override
             public void execute() {
                 for (String key : keys) {
@@ -62,14 +62,14 @@ public class PersistenceManager {
         });
     }
 
-    private void modifyValues(Callback callback) {
+    private void modifyValues(SimpleCallback callback) {
         this.editor = prefs.edit();
         callback.execute();
         editor.apply();
     }
 
     public void saveString(final String key, final String value) {
-        modifyValues(new Callback() {
+        modifyValues(new SimpleCallback() {
             @Override
             public void execute() {
                 editor.putString(key, value);
@@ -78,7 +78,7 @@ public class PersistenceManager {
     }
 
     public void saveInt(final String key, final int value) {
-        modifyValues(new Callback() {
+        modifyValues(new SimpleCallback() {
             @Override
             public void execute() {
                 editor.putInt(key, value);
@@ -91,7 +91,7 @@ public class PersistenceManager {
     }
 
     private void clearAllSavedItems() {
-        modifyValues(new Callback() {
+        modifyValues(new SimpleCallback() {
             @Override
             public void execute() {
                 for (int i = 0; i < getNumberOfItems(); i++) {

@@ -1,6 +1,6 @@
 package com.dreiri.smarping.utils;
 
-public interface Callback {
+public interface SimpleCallback {
 
     void execute();
 
