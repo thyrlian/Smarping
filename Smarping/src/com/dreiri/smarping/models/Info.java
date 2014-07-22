@@ -10,11 +10,15 @@ import android.util.Log;
 public class Info {
 
     private Date date;
-    private Location location;
+    private Location location = null;
 
     public Info(Location location) {
         setDate();
         setLocation(location);
+    }
+
+    public Info() {
+        setDate();
     }
 
     private void setDate() {
