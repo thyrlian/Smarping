@@ -17,8 +17,10 @@ android:
     # - extra-google-google_play_services
 
 jdk:
-  - oraclejdk8
   - oraclejdk7
+  # Disable JDK8 for the time being, due to failed task ':app:preDexDebug'
+  # Cause: project and library are compiled by different versions of JDK
+  # - oraclejdk8
 
 before_script:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
