@@ -1,10 +1,11 @@
 language: android
 android:
-  # The BuildTools version used
-  - build-tools-21
+  components:
+    # The BuildTools version used
+    - build-tools-21
   
-  # The SDK version used to compile
-  - android-21
+    # The SDK version used to compile
+    - android-21
   
-  # Additional components
-  - extra-android-support
+    # Additional components
+    - extra-android-support
