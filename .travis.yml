@@ -10,3 +10,7 @@ android:
     # Additional components
     - extra-android-support
     - extra-google-google_play_services
+
+jdk:
+  - oraclejdk8
+  - oraclejdk7
