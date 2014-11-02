@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Smarping</string>
+
+    <!-- ActionBar -->
+    <string name="action_delete">删除</string>
+
+    <!-- Adding -->
+    <string name="edit_text_add">添加新的项目…</string>
+
+    <!-- Dialog -->
+    <string name="btn_pos">确认</string>
+    <string name="btn_neg">取消</string>
+
+    <!-- Toast -->
+    <string name="toast_null_value">不能添加空的项目，请填写一个名称。</string>
+    <string name="toast_already_exists">对不起，该项目已经存在。</string>
+
+</resources>
