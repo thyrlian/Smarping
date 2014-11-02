@@ -17,7 +17,7 @@
 
         <EditText
             android:id="@+id/editTextNewItem"
-            android:imeOptions="actionGo"
+            android:imeOptions="actionGo|flagNoExtractUi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
