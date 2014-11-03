@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.dreiri.smarping.R;
@@ -44,6 +45,7 @@ public class EditItemDialogFragment extends DialogFragment {
         editTextItemName = (EditText) view.findViewById(R.id.itemName);
         editTextItemName.setText(itemName);
         editTextItemName.setSelection(editTextItemName.length());
+        editTextItemName.requestFocus();
 
         builder.setView(view);
 
@@ -73,7 +75,9 @@ public class EditItemDialogFragment extends DialogFragment {
             }
         });
 
-        return builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
     private void updateItem() {
