@@ -68,6 +68,7 @@ public class EditItemDialogFragment extends DialogFragment {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
                     updateItem();
                     dismiss();
+                    getActivity().getCurrentFocus().clearFocus();
                     return true;
                 } else {
                     return false;
