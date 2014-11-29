@@ -38,7 +38,7 @@ public class EditItemDialogFragment extends DialogFragment {
         itemPos = arguments.getInt("itemPos");
         itemName = arguments.getString("itemName");
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_edit_item, null);
