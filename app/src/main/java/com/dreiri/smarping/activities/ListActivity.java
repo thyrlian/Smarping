@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -26,8 +27,10 @@ import com.dreiri.smarping.exceptions.NullValueException;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.services.LocationService;
+import com.dreiri.smarping.utils.MethodsOnAndroidVersionsUnification;
 import com.dreiri.smarping.utils.EditItemDialogListener;
 import com.dreiri.smarping.utils.ResultCallback;
+import com.dreiri.smarping.utils.SimpleCallback;
 import com.dreiri.smarping.views.BackgroundContainer;
 import com.dreiri.smarping.views.DrawableRightOnTouchListener;
 
@@ -236,9 +239,10 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                             }
                             long duration = (int) ((1 - fractionCovered) * SWIPE_DURATION);
                             listView.setEnabled(false);
-                            view.animate().setDuration(duration).alpha(endAlpha).translationX(endX).withEndAction(new Runnable() {
+                            ViewPropertyAnimator viewPropertyAnimator = view.animate().setDuration(duration).alpha(endAlpha).translationX(endX);
+                            MethodsOnAndroidVersionsUnification.setEndActionAfterAnimation(viewPropertyAnimator, new SimpleCallback() {
                                 @Override
-                                public void run() {
+                                public void execute() {
                                     view.setAlpha(1);
                                     view.setTranslationX(0);
                                     if (remove) {
@@ -293,9 +297,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                             child.setTranslationY(delta);
                             child.animate().setDuration(MOVE_DURATION).translationY(0);
                             if (firstAnimation) {
-                                child.animate().withEndAction(new Runnable() {
+                                MethodsOnAndroidVersionsUnification.setEndActionAfterAnimation(child.animate(), new SimpleCallback() {
                                     @Override
-                                    public void run() {
+                                    public void execute() {
                                         backgroundContainer.hideBackground();
                                         swiping = false;
                                         listView.setEnabled(true);
@@ -311,9 +315,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                         child.setTranslationY(delta);
                         child.animate().setDuration(MOVE_DURATION).translationY(0);
                         if (firstAnimation) {
-                            child.animate().withEndAction(new Runnable() {
+                            MethodsOnAndroidVersionsUnification.setEndActionAfterAnimation(child.animate(), new SimpleCallback() {
                                 @Override
-                                public void run() {
+                                public void execute() {
                                     backgroundContainer.hideBackground();
                                     swiping = false;
                                     listView.setEnabled(true);
