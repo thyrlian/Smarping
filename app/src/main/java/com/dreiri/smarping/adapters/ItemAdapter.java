@@ -1,7 +1,5 @@
 package com.dreiri.smarping.adapters;
 
-import java.util.ArrayList;
-
 import android.app.FragmentManager;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreiri.smarping.R;
@@ -17,26 +16,34 @@ import com.dreiri.smarping.activities.ListActivity;
 import com.dreiri.smarping.fragments.EditItemDialogFragment;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
+import com.dreiri.smarping.persistence.PersistenceManager;
+
+import java.util.ArrayList;
 
 public class ItemAdapter extends BaseAdapter {
 
     private List list;
+    private Context context;
     private ListActivity activity;
     private FragmentManager fragmentManager;
     private LayoutInflater inflater;
+    private View.OnTouchListener onTouchListener;
     private ViewHolder viewHolder;
     private ArrayList<Boolean> checkBoxStates = new ArrayList<Boolean>();
 
     private class ViewHolder {
+        LinearLayout cardContainer;
         TextView textViewItemName;
         CheckBox checkBox;
     }
 
-    public ItemAdapter(Context context, List list) {
+    public ItemAdapter(Context context, List list, View.OnTouchListener onTouchListener) {
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.activity = (ListActivity) context;
         this.fragmentManager = activity.getFragmentManager();
         this.list = list;
+        this.onTouchListener = onTouchListener;
         resetCheckBoxStates();
     }
 
@@ -56,10 +63,16 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.fragment_list_row, null);
             viewHolder = new ViewHolder();
+            viewHolder.cardContainer = (LinearLayout) convertView.findViewById(R.id.cardContainer);
             viewHolder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName);
             viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
             convertView.setTag(viewHolder);
@@ -100,6 +113,8 @@ public class ItemAdapter extends BaseAdapter {
             }
         });
 
+        viewHolder.cardContainer.setOnTouchListener(onTouchListener);
+
         return convertView;
     }
 
@@ -122,6 +137,13 @@ public class ItemAdapter extends BaseAdapter {
         for (int i = 0; i < getCount(); i++) {
             checkBoxStates.add(false);
         }
+    }
+
+    public void remove(Object object) {
+        list.remove((Item) object);
+        notifyDataSetChanged();
+        PersistenceManager persistenceManager = new PersistenceManager(context);
+        persistenceManager.saveList(list);
     }
 
     public void refreshWithNewData(List list) {

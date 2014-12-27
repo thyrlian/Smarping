@@ -1,7 +1,5 @@
 package com.dreiri.smarping.activities;
 
-import java.util.ArrayList;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +10,9 @@ import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,17 +28,27 @@ import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.services.LocationService;
 import com.dreiri.smarping.utils.EditItemDialogListener;
 import com.dreiri.smarping.utils.ResultCallback;
+import com.dreiri.smarping.views.BackgroundContainer;
 import com.dreiri.smarping.views.DrawableRightOnTouchListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListActivity extends Activity implements EditItemDialogListener {
 
     public static final int REQUEST_SPEECH = 101;
+    private static final int SWIPE_DURATION = 250;
+    private static final int MOVE_DURATION = 150;
     private ListView listView;
     private EditText editTextNewItem;
     public List list = new List();
     public ItemAdapter itemAdapter;
     private Menu menu;
     private Location location = null;
+    private boolean swiping = false;
+    private boolean itemPressed = false;
+    private HashMap<Long, Integer> itemIdTopMap = new HashMap<Long, Integer>();
+    private BackgroundContainer backgroundContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         PersistenceManager persistenceManager = new PersistenceManager(this);
         list = persistenceManager.readList();
         listView = (ListView) findViewById(R.id.listView);
-        itemAdapter = new ItemAdapter(this, list);
+        itemAdapter = new ItemAdapter(this, list, onTouchListener);
         listView.setAdapter(itemAdapter);
         editTextNewItem = (EditText) findViewById(R.id.editTextNewItem);
         editTextNewItem.setOnTouchListener(new DrawableRightOnTouchListener(editTextNewItem) {
@@ -60,6 +71,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 return false;
             }
         });
+        backgroundContainer = (BackgroundContainer) findViewById(R.id.listViewBackground);
         setLocation();
     }
 
@@ -159,6 +171,162 @@ public class ListActivity extends Activity implements EditItemDialogListener {
 
     public Location getLocation() {
         return location;
+    }
+
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        float downX;
+        private int swipeSlop = -1;
+
+        @Override
+        public boolean onTouch(final View view, MotionEvent motionEvent) {
+            if (swipeSlop < 0) {
+                swipeSlop = ViewConfiguration.get(ListActivity.this).getScaledTouchSlop();
+            }
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (itemPressed) {
+                        return false;
+                    }
+                    itemPressed = true;
+                    downX = motionEvent.getX();
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    view.setAlpha(1);
+                    view.setTranslationX(0);
+                    itemPressed = false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    {
+                        float x = motionEvent.getX() + view.getTranslationX();
+                        float deltaX = x - downX;
+                        float deltaXAbs = Math.abs(deltaX);
+                        if (!swiping) {
+                            if (deltaXAbs > swipeSlop) {
+                                swiping = true;
+                                listView.requestDisallowInterceptTouchEvent(true);
+                                backgroundContainer.showBackground(view.getTop(), view.getHeight());
+                            }
+                        }
+                        if (swiping) {
+                            view.setTranslationX(x - downX);
+                            view.setAlpha(1 - deltaXAbs / view.getWidth());
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    {
+                        if (swiping) {
+                            float x = motionEvent.getX() + view.getTranslationX();
+                            float deltaX = x - downX;
+                            float deltaXAbs = Math.abs(deltaX);
+                            float fractionCovered;
+                            float endX;
+                            float endAlpha;
+                            final boolean remove;
+                            if (deltaXAbs > view.getWidth() / 4) {
+                                fractionCovered = deltaXAbs / view.getWidth();
+                                endX = deltaX < 0 ? -view.getWidth() : view.getWidth();
+                                endAlpha = 0;
+                                remove = true;
+                            } else {
+                                fractionCovered = 1 - (deltaXAbs / view.getWidth());
+                                endX = 0;
+                                endAlpha = 1;
+                                remove = false;
+                            }
+                            long duration = (int) ((1 - fractionCovered) * SWIPE_DURATION);
+                            listView.setEnabled(false);
+                            view.animate().setDuration(duration).alpha(endAlpha).translationX(endX).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.setAlpha(1);
+                                    view.setTranslationX(0);
+                                    if (remove) {
+                                        animateRemoval(listView, view);
+                                    } else {
+                                        backgroundContainer.hideBackground();
+                                        swiping = false;
+                                        listView.setEnabled(true);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    itemPressed = false;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+    };
+
+    private void animateRemoval(final ListView listview, View viewToRemove) {
+        int firstVisiblePosition = listview.getFirstVisiblePosition();
+        for (int i = 0; i < listview.getChildCount(); ++i) {
+            View child = listview.getChildAt(i);
+            if (child != viewToRemove) {
+                int position = firstVisiblePosition + i;
+                long itemId = itemAdapter.getItemId(position);
+                itemIdTopMap.put(itemId, child.getTop());
+            }
+        }
+        int position = listView.getPositionForView(viewToRemove);
+        itemAdapter.remove(itemAdapter.getItem(position));
+
+        final ViewTreeObserver observer = listview.getViewTreeObserver();
+        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                observer.removeOnPreDrawListener(this);
+                boolean firstAnimation = true;
+                int firstVisiblePosition = listview.getFirstVisiblePosition();
+                for (int i = 0; i < listview.getChildCount(); ++i) {
+                    final View child = listview.getChildAt(i);
+                    int position = firstVisiblePosition + i;
+                    long itemId = itemAdapter.getItemId(position);
+                    Integer startTop = itemIdTopMap.get(itemId);
+                    int top = child.getTop();
+                    if (startTop != null) {
+                        if (startTop != top) {
+                            int delta = startTop - top;
+                            child.setTranslationY(delta);
+                            child.animate().setDuration(MOVE_DURATION).translationY(0);
+                            if (firstAnimation) {
+                                child.animate().withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        backgroundContainer.hideBackground();
+                                        swiping = false;
+                                        listView.setEnabled(true);
+                                    }
+                                });
+                                firstAnimation = false;
+                            }
+                        }
+                    } else {
+                        int childHeight = child.getHeight() + listview.getDividerHeight();
+                        startTop = top + (i > 0 ? childHeight : -childHeight);
+                        int delta = startTop - top;
+                        child.setTranslationY(delta);
+                        child.animate().setDuration(MOVE_DURATION).translationY(0);
+                        if (firstAnimation) {
+                            child.animate().withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    backgroundContainer.hideBackground();
+                                    swiping = false;
+                                    listView.setEnabled(true);
+                                }
+                            });
+                            firstAnimation = false;
+                        }
+                    }
+                }
+                itemIdTopMap.clear();
+                return true;
+            }
+        });
     }
 
 }

@@ -15,15 +15,22 @@
         android:layout_marginTop="6dp" >
     </fragment>
 
-    <ListView
-        android:id="@+id/listView"
+    <com.dreiri.smarping.views.BackgroundContainer
+        android:id="@+id/listViewBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:listSelector="@color/gray" >
-    </ListView>
+        android:layout_height="wrap_content">
 
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="@color/gray" >
+        </ListView>
+
+    </com.dreiri.smarping.views.BackgroundContainer>
+    
 </LinearLayout>

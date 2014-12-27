@@ -4,6 +4,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight" >
 
     <LinearLayout
+        android:id="@+id/cardContainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="@dimen/list_row_margin_to_other"
