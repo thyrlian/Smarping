@@ -237,7 +237,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                 endAlpha = 1;
                                 remove = false;
                             }
-                            long duration = (int) ((1 - fractionCovered) * SWIPE_DURATION);
+                            long duration = Math.abs((int) ((1 - fractionCovered) * SWIPE_DURATION));
                             listView.setEnabled(false);
                             ViewPropertyAnimator viewPropertyAnimator = view.animate().setDuration(duration).alpha(endAlpha).translationX(endX);
                             MethodsOnAndroidVersionsUnification.setEndActionAfterAnimation(viewPropertyAnimator, new SimpleCallback() {
