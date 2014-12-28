@@ -22,6 +22,9 @@ jdk:
   # Cause: project and library are compiled by different versions of JDK
   # - oraclejdk8
 
+before_install:
+  - echo yes | android update sdk --all --filter build-tools-21.1.2 --no-ui --force > /dev/null
+
 before_script:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
