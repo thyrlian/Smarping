@@ -300,7 +300,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
 
     private void animateRemoval(final ListView listview, View viewToRemove) {
         int firstVisiblePosition = listview.getFirstVisiblePosition();
-        for (int i = 0; i < listview.getChildCount(); ++i) {
+        for (int i = 0; i < listview.getChildCount(); i++) {
             View child = listview.getChildAt(i);
             if (child != viewToRemove) {
                 int position = firstVisiblePosition + i;
@@ -318,7 +318,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                 observer.removeOnPreDrawListener(this);
                 boolean firstAnimation = true;
                 int firstVisiblePosition = listview.getFirstVisiblePosition();
-                for (int i = 0; i < listview.getChildCount(); ++i) {
+                for (int i = 0; i < listview.getChildCount(); i++) {
                     final View child = listview.getChildAt(i);
                     int position = firstVisiblePosition + i;
                     long itemId = itemAdapter.getItemId(position);
@@ -339,6 +339,14 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                     }
                                 });
                                 firstAnimation = false;
+                            } else {
+                                if (i == listview.getChildCount() - 1) {
+                                    listView.setEnabled(true);
+                                }
+                            }
+                        } else {
+                            if (i == listview.getChildCount() - 1) {
+                                listView.setEnabled(true);
                             }
                         }
                     } else {
@@ -357,6 +365,10 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                 }
                             });
                             firstAnimation = false;
+                        } else {
+                            if (i == listview.getChildCount() - 1) {
+                                listView.setEnabled(true);
+                            }
                         }
                     }
                 }
