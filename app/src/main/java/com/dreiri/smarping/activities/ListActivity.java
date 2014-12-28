@@ -24,11 +24,13 @@ import com.dreiri.smarping.adapters.ItemAdapter;
 import com.dreiri.smarping.exceptions.AlreadyExistsException;
 import com.dreiri.smarping.exceptions.LocationServicesNotAvailableException;
 import com.dreiri.smarping.exceptions.NullValueException;
+import com.dreiri.smarping.fragments.EditItemDialogFragment;
+import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.services.LocationService;
-import com.dreiri.smarping.utils.MethodsOnAndroidVersionsUnification;
 import com.dreiri.smarping.utils.EditItemDialogListener;
+import com.dreiri.smarping.utils.MethodsOnAndroidVersionsUnification;
 import com.dreiri.smarping.utils.ResultCallback;
 import com.dreiri.smarping.utils.SimpleCallback;
 import com.dreiri.smarping.views.BackgroundContainer;
@@ -179,9 +181,13 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         float downX;
         private int swipeSlop = -1;
+        private long previousClickTime;
+        private int clickCount = 0;
+        private static final int DOUBLE_CLICK_DELAY = 300;
 
         @Override
         public boolean onTouch(final View view, MotionEvent motionEvent) {
+            final View viewParent = (View) view.getParent();
             if (swipeSlop < 0) {
                 swipeSlop = ViewConfiguration.get(ListActivity.this).getScaledTouchSlop();
             }
@@ -192,61 +198,63 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                     }
                     itemPressed = true;
                     downX = motionEvent.getX();
+                    previousClickTime = System.currentTimeMillis();
+                    clickCount++;
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    view.setAlpha(1);
-                    view.setTranslationX(0);
+                    viewParent.setAlpha(1);
+                    viewParent.setTranslationX(0);
                     itemPressed = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     {
-                        float x = motionEvent.getX() + view.getTranslationX();
+                        float x = motionEvent.getX() + viewParent.getTranslationX();
                         float deltaX = x - downX;
                         float deltaXAbs = Math.abs(deltaX);
                         if (!swiping) {
                             if (deltaXAbs > swipeSlop) {
                                 swiping = true;
                                 listView.requestDisallowInterceptTouchEvent(true);
-                                backgroundContainer.showBackground(view.getTop(), view.getHeight());
+                                backgroundContainer.showBackground(viewParent.getTop(), viewParent.getHeight());
                             }
                         }
                         if (swiping) {
-                            view.setTranslationX(x - downX);
-                            view.setAlpha(1 - deltaXAbs / view.getWidth());
+                            viewParent.setTranslationX(x - downX);
+                            viewParent.setAlpha(1 - deltaXAbs / viewParent.getWidth());
                         }
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                     {
                         if (swiping) {
-                            float x = motionEvent.getX() + view.getTranslationX();
+                            float x = motionEvent.getX() + viewParent.getTranslationX();
                             float deltaX = x - downX;
                             float deltaXAbs = Math.abs(deltaX);
                             float fractionCovered;
                             float endX;
                             float endAlpha;
                             final boolean remove;
-                            if (deltaXAbs > view.getWidth() / 4) {
-                                fractionCovered = deltaXAbs / view.getWidth();
-                                endX = deltaX < 0 ? -view.getWidth() : view.getWidth();
+                            if (deltaXAbs > viewParent.getWidth() / 4) {
+                                fractionCovered = deltaXAbs / viewParent.getWidth();
+                                endX = deltaX < 0 ? -viewParent.getWidth() : viewParent.getWidth();
                                 endAlpha = 0;
                                 remove = true;
                             } else {
-                                fractionCovered = 1 - (deltaXAbs / view.getWidth());
+                                fractionCovered = 1 - (deltaXAbs / viewParent.getWidth());
                                 endX = 0;
                                 endAlpha = 1;
                                 remove = false;
                             }
                             long duration = Math.abs((int) ((1 - fractionCovered) * SWIPE_DURATION));
                             listView.setEnabled(false);
-                            ViewPropertyAnimator viewPropertyAnimator = view.animate().setDuration(duration).alpha(endAlpha).translationX(endX);
+                            ViewPropertyAnimator viewPropertyAnimator = viewParent.animate().setDuration(duration).alpha(endAlpha).translationX(endX);
                             MethodsOnAndroidVersionsUnification.setEndActionAfterAnimation(viewPropertyAnimator, new SimpleCallback() {
                                 @Override
                                 public void execute() {
-                                    view.setAlpha(1);
-                                    view.setTranslationX(0);
+                                    viewParent.setAlpha(1);
+                                    viewParent.setTranslationX(0);
                                     if (remove) {
-                                        animateRemoval(listView, view);
+                                        animateRemoval(listView, viewParent);
                                     } else {
                                         backgroundContainer.hideBackground();
                                         swiping = false;
@@ -255,6 +263,15 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                 }
                             });
                         }
+                    }
+                    if (clickCount == 2 && System.currentTimeMillis() - previousClickTime < DOUBLE_CLICK_DELAY) {
+                        int position = listView.getPositionForView(view);
+                        Item item = (Item) itemAdapter.getItem(position);
+                        EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
+                        editItemDialogFragment.show(ListActivity.this.getFragmentManager(), "item");
+                        clickCount = 0;
+                    } else if (clickCount > 2) {
+                        clickCount = 0;
                     }
                     itemPressed = false;
                     break;

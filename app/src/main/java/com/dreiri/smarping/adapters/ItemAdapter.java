@@ -1,6 +1,5 @@
 package com.dreiri.smarping.adapters;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +7,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.activities.ListActivity;
-import com.dreiri.smarping.fragments.EditItemDialogFragment;
 import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
@@ -25,14 +22,12 @@ public class ItemAdapter extends BaseAdapter {
     private List list;
     private Context context;
     private ListActivity activity;
-    private FragmentManager fragmentManager;
     private LayoutInflater inflater;
     private View.OnTouchListener onTouchListener;
     private ViewHolder viewHolder;
     private ArrayList<Boolean> checkBoxStates = new ArrayList<Boolean>();
 
     private class ViewHolder {
-        LinearLayout cardContainer;
         TextView textViewItemName;
         CheckBox checkBox;
     }
@@ -41,7 +36,6 @@ public class ItemAdapter extends BaseAdapter {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.activity = (ListActivity) context;
-        this.fragmentManager = activity.getFragmentManager();
         this.list = list;
         this.onTouchListener = onTouchListener;
         resetCheckBoxStates();
@@ -72,7 +66,6 @@ public class ItemAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.fragment_list_row, null);
             viewHolder = new ViewHolder();
-            viewHolder.cardContainer = (LinearLayout) convertView.findViewById(R.id.cardContainer);
             viewHolder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName);
             viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
             convertView.setTag(viewHolder);
@@ -85,25 +78,6 @@ public class ItemAdapter extends BaseAdapter {
         final Item item = list.get(position);
         viewHolder.textViewItemName.setText(item.name);
         viewHolder.checkBox.setChecked(checkBoxStates.get(position));
-
-        viewHolder.textViewItemName.setOnClickListener(new OnClickListener() {
-            static final int DOUBLE_CLICK_DELAY = 300;
-            long lastClickTime = 0;
-            long thisClickTime;
-
-            @Override
-            public void onClick(View v) {
-                thisClickTime = System.currentTimeMillis();
-                if (thisClickTime - lastClickTime < DOUBLE_CLICK_DELAY) {
-                    lastClickTime = 0;
-                    EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
-                    editItemDialogFragment.show(fragmentManager, "item");
-                } else {
-                    lastClickTime = thisClickTime;
-                }
-            }
-        });
-
         viewHolder.checkBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +86,7 @@ public class ItemAdapter extends BaseAdapter {
                 activity.updateMenu();
             }
         });
-
-        viewHolder.cardContainer.setOnTouchListener(onTouchListener);
+        viewHolder.textViewItemName.setOnTouchListener(onTouchListener);
 
         return convertView;
     }

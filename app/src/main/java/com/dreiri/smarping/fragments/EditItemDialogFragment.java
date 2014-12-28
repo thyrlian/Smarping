@@ -3,6 +3,7 @@ package com.dreiri.smarping.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.dreiri.smarping.R;
@@ -53,12 +55,14 @@ public class EditItemDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 updateItem();
+                hideKeyboard();
             }
         });
 
         builder.setNegativeButton(R.string.btn_neg, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                hideKeyboard();
             }
         });
 
@@ -69,6 +73,7 @@ public class EditItemDialogFragment extends DialogFragment {
                     updateItem();
                     dismiss();
                     getActivity().getCurrentFocus().clearFocus();
+                    hideKeyboard();
                     return true;
                 } else {
                     return false;
@@ -87,6 +92,11 @@ public class EditItemDialogFragment extends DialogFragment {
             EditItemDialogListener listener = (EditItemDialogListener) getActivity();
             listener.onFinishEditDialog(itemPos, newItemName);
         }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editTextItemName.getWindowToken(), 0);
     }
 
 }
