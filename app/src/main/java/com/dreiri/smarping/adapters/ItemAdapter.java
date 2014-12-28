@@ -105,6 +105,13 @@ public class ItemAdapter extends BaseAdapter {
         return checkedIndexes;
     }
 
+    public void setCheckedItems(ArrayList<Integer> checkedItemsIndexes) {
+        checkBoxStates.clear();
+        for (int i = 0; i < getCount(); i++) {
+            checkBoxStates.add(checkedItemsIndexes.contains(i));
+        }
+    }
+
     private void resetCheckBoxStates() {
         checkBoxStates.clear();
         for (int i = 0; i < getCount(); i++) {

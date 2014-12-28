@@ -256,7 +256,18 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                     viewParent.setAlpha(1);
                                     viewParent.setTranslationX(0);
                                     if (remove) {
+                                        int positionOfRemovingItem = listView.getPositionForView(view);
+                                        int[] indexesOfCheckedItems = itemAdapter.getIndexesOfCheckedItems();
+                                        ArrayList<Integer> newIndexesOfCheckedItems = new ArrayList<Integer>();
+                                        for (int idx : indexesOfCheckedItems) {
+                                            if (idx < positionOfRemovingItem) {
+                                                newIndexesOfCheckedItems.add(idx);
+                                            } else if (idx > positionOfRemovingItem) {
+                                                newIndexesOfCheckedItems.add(idx - 1);
+                                            }
+                                        }
                                         animateRemoval(listView, viewParent);
+                                        itemAdapter.setCheckedItems(newIndexesOfCheckedItems);
                                     } else {
                                         backgroundContainer.hideBackground();
                                         swiping = false;
