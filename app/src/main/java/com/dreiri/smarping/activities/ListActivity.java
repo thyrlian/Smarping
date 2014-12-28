@@ -179,11 +179,12 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     }
 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        float downX;
+        private float downX;
         private int swipeSlop = -1;
         private long previousClickTime;
         private int clickCount = 0;
         private static final int DOUBLE_CLICK_DELAY = 300;
+        private boolean deleted = false;
 
         @Override
         public boolean onTouch(final View view, MotionEvent motionEvent) {
@@ -239,6 +240,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                 endX = deltaX < 0 ? -viewParent.getWidth() : viewParent.getWidth();
                                 endAlpha = 0;
                                 remove = true;
+                                deleted = true;
                             } else {
                                 fractionCovered = 1 - (deltaXAbs / viewParent.getWidth());
                                 endX = 0;
@@ -264,15 +266,18 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                             });
                         }
                     }
-                    if (clickCount == 2 && System.currentTimeMillis() - previousClickTime < DOUBLE_CLICK_DELAY) {
-                        int position = listView.getPositionForView(view);
-                        Item item = (Item) itemAdapter.getItem(position);
-                        EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
-                        editItemDialogFragment.show(ListActivity.this.getFragmentManager(), "item");
-                        clickCount = 0;
-                    } else if (clickCount > 2) {
-                        clickCount = 0;
+                    if (!deleted) {
+                        if (clickCount == 2 && System.currentTimeMillis() - previousClickTime < DOUBLE_CLICK_DELAY) {
+                            int position = listView.getPositionForView(view);
+                            Item item = (Item) itemAdapter.getItem(position);
+                            EditItemDialogFragment editItemDialogFragment = EditItemDialogFragment.newInstance(position, item.name);
+                            editItemDialogFragment.show(ListActivity.this.getFragmentManager(), "item");
+                            clickCount = 0;
+                        } else if (clickCount > 2) {
+                            clickCount = 0;
+                        }
                     }
+                    deleted = false;
                     itemPressed = false;
                     break;
                 default:
