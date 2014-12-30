@@ -64,7 +64,7 @@ public class ItemAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fragment_list_row, null);
+            convertView = inflater.inflate(R.layout.fragment_list_row, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName);
             viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);

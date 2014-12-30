@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -41,9 +40,7 @@ public class EditItemDialogFragment extends DialogFragment {
         itemName = arguments.getString("itemName");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_edit_item, null);
+        View view = View.inflate(getActivity(), R.layout.dialog_edit_item, null);
         editTextItemName = (EditText) view.findViewById(R.id.itemName);
         editTextItemName.setText(itemName);
         editTextItemName.setSelection(editTextItemName.length());
