@@ -290,6 +290,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                     }
                     deleted = false;
                     itemPressed = false;
+                    view.performClick();
                     break;
                 default:
                     return false;
