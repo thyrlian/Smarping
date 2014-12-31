@@ -10,20 +10,19 @@ import android.util.Log;
 import com.dreiri.smarping.exceptions.LocationServicesNotAvailableException;
 import com.dreiri.smarping.utils.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class LocationService implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private final static long UPDATE_INTERVAL = 10000;
     private final static long FASTEST_UPDATE_INTERVAL = 5000;
     private Context context;
-    private LocationClient locationClient;
+    private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private ResultCallback<Location> callback = null;
 
@@ -39,7 +38,7 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     public LocationService(Context context) {
         if (checkAvailability(context)) {
             this.context = context;
-            this.locationClient = new LocationClient(context, this, this);
+            googleApiClient = new GoogleApiClient.Builder(context).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
             setLocationRequest();
         } else {
             throw new LocationServicesNotAvailableException("Location Services are not available");
@@ -59,24 +58,24 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     }
 
     public void connect() {
-        locationClient.connect();
+        googleApiClient.connect();
     }
 
     public void disconnect() {
-        locationClient.disconnect();
+        googleApiClient.disconnect();
     }
 
     public Location getLastLocation() {
-        return locationClient.getLastLocation();
+        return LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
     }
 
     public void requestLocationUpdates() {
-        locationClient.requestLocationUpdates(locationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
     public void requestLocationUpdatesAndDisconnect() {
         if (callback != null) {
-            locationClient.requestLocationUpdates(locationRequest, new LocationListener() {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     callback.execute(location);
@@ -87,39 +86,39 @@ public class LocationService implements ConnectionCallbacks, OnConnectionFailedL
     }
 
     public void stopUpdates() {
-        if (locationClient.isConnected()) {
-            locationClient.removeLocationUpdates(this);
+        if (googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
-        locationClient.disconnect();
+        googleApiClient.disconnect();
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        if (result.hasResolution()) {
+    public void onConnected(Bundle bundle) {
+        Log.i("Smarping", "Connected to Location Services");
+        requestLocationUpdatesAndDisconnect();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("Smarping", "Suspended from Location Services");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i("Smarping", "Location is changed");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
             try {
-                result.startResolutionForResult((Activity) context, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                connectionResult.startResolutionForResult((Activity) context, CONNECTION_FAILURE_RESOLUTION_REQUEST);
             } catch (IntentSender.SendIntentException e) {
                 e.printStackTrace();
             }
         } else {
             Log.e("Smarping", "Failed to connect to Location Services");
         }
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.i("Smarping", "Connected to Location Services");
-        requestLocationUpdatesAndDisconnect();
-    }
-
-    @Override
-    public void onDisconnected() {
-        Log.e("Smarping", "Disconnected from Location Services");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i("Smarping", "Location is changed");
     }
 
 }
