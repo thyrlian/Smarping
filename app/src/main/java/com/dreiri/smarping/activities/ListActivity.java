@@ -77,7 +77,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             }
         });
         backgroundContainer = (BackgroundContainer) findViewById(R.id.listViewBackground);
-        setLocation();
     }
 
     @Override
