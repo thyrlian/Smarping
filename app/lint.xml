@@ -3,4 +3,5 @@
     <issue id="RtlHardcoded">
         <ignore path="src/main/res/layout/fragment_new_item.xml" />
     </issue>
+    <issue id="IconMissingDensityFolder" severity="ignore" />
 </lint>
