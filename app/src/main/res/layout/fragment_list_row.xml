@@ -24,9 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingBottom="@dimen/list_row_padding_to_border"
             android:paddingLeft="@dimen/list_row_padding_between_contents"
             android:paddingTop="@dimen/list_row_padding_to_border"
+            android:paddingBottom="@dimen/list_row_padding_to_border"
+            android:paddingRight="@dimen/list_row_padding_between_contents"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold" />
         
