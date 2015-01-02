@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dreiri.smarping.R;
@@ -24,8 +24,8 @@ public class NewItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_new_item, container, false);
-        EditText editTextNewItem = (EditText) frameLayout.findViewById(R.id.editTextNewItem);
+        LinearLayout layout= (LinearLayout) inflater.inflate(R.layout.fragment_new_item, container, false);
+        EditText editTextNewItem = (EditText) layout.findViewById(R.id.editTextNewItem);
         editTextNewItem.setImeActionLabel("Add", KeyEvent.KEYCODE_ENTER);
         editTextNewItem.setOnKeyListener(new OnKeyListener() {
             @Override
@@ -45,7 +45,7 @@ public class NewItemFragment extends Fragment {
                 }
             }
         });
-        return frameLayout;
+        return layout;
     }
 
     private class ListUpdateTask implements Runnable {
