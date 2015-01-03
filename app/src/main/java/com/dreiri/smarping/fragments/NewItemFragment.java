@@ -24,7 +24,7 @@ public class NewItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout layout= (LinearLayout) inflater.inflate(R.layout.fragment_new_item, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_new_item, container, false);
         EditText editTextNewItem = (EditText) layout.findViewById(R.id.editTextNewItem);
         editTextNewItem.setImeActionLabel("Add", KeyEvent.KEYCODE_ENTER);
         editTextNewItem.setOnKeyListener(new OnKeyListener() {
