@@ -4,7 +4,7 @@
     <dimen name="dialog_widget_margin">8dp</dimen>
     <dimen name="list_row_padding_to_border">8dp</dimen>
     <dimen name="list_row_padding_between_contents">8dp</dimen>
-    <dimen name="list_row_margin_to_side">6dp</dimen>
-    <dimen name="list_row_margin_to_other">4dp</dimen>
+    <dimen name="list_row_margin_to_side">8dp</dimen>
+    <dimen name="list_row_margin_to_other">8dp</dimen>
 
 </resources>

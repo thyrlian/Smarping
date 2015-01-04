@@ -9,10 +9,10 @@
         android:name="com.dreiri.smarping.fragments.NewItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp" >
+        android:layout_marginLeft="@dimen/list_row_margin_to_side"
+        android:layout_marginTop="@dimen/list_row_margin_to_other"
+        android:layout_marginRight="@dimen/list_row_margin_to_side"
+        android:layout_marginBottom="@dimen/list_row_margin_to_other" >
     </fragment>
 
     <com.dreiri.smarping.views.BackgroundContainer
@@ -24,10 +24,10 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/list_row_margin_to_side"
+            android:layout_marginTop="@dimen/list_row_margin_to_other"
+            android:layout_marginRight="@dimen/list_row_margin_to_side"
+            android:layout_marginBottom="@dimen/list_row_margin_to_other"
             android:divider="@null"
             android:dividerHeight="6dp"
             android:listSelector="@color/gray" >
