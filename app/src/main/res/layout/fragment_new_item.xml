@@ -1,38 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentNewItem"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/list_row_margin_to_other"
+    android:layout_marginLeft="@dimen/list_row_margin_to_side"
+    android:layout_marginRight="@dimen/list_row_margin_to_side"
+    android:layout_marginTop="@dimen/list_row_margin_to_other"
+    android:background="@drawable/bg_card_normal"
+    android:orientation="horizontal" >
 
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+    <EditText
+        android:id="@+id/editTextNewItem"
+        android:imeOptions="actionGo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/list_row_margin_to_other"
-        android:layout_marginLeft="@dimen/list_row_margin_to_side"
-        android:layout_marginRight="@dimen/list_row_margin_to_side"
-        android:layout_marginTop="@dimen/list_row_margin_to_other"
-        android:background="@drawable/bg_card_normal"
-        android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/editTextNewItem"
-            android:imeOptions="actionGo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true"
-            android:hint="@string/edit_text_add"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusDown="@id/editTextNewItem"
-            android:paddingLeft="@dimen/list_row_padding_between_contents"
-            android:paddingTop="@dimen/list_row_padding_to_border"
-            android:paddingBottom="@dimen/list_row_padding_to_border"
-            android:paddingRight="@dimen/list_row_padding_between_contents"
-            android:drawableRight="@drawable/ic_action_microphone"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        
-    </LinearLayout>
+        android:layout_gravity="center_vertical"
+        android:singleLine="true"
+        android:hint="@string/edit_text_add"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:nextFocusDown="@id/editTextNewItem"
+        android:paddingLeft="@dimen/list_row_padding_between_contents"
+        android:paddingTop="@dimen/list_row_padding_to_border"
+        android:paddingBottom="@dimen/list_row_padding_to_border"
+        android:paddingRight="@dimen/list_row_padding_between_contents"
+        android:drawableRight="@drawable/ic_action_microphone"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>
