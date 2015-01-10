@@ -267,6 +267,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                                         }
                                         animateRemoval(listView, viewParent);
                                         itemAdapter.setCheckedItems(newIndexesOfCheckedItems);
+                                        updateMenu();
                                     } else {
                                         backgroundContainer.hideBackground();
                                         swiping = false;
