@@ -42,9 +42,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     private static final int SWIPE_DURATION = 250;
     private static final int MOVE_DURATION = 150;
     private ListView listView;
-    private EditText editTextNewItem;
     public List list = new List();
     public ItemAdapter itemAdapter;
+    public EditText editTextNewItem;
     private Menu menu;
     private boolean swiping = false;
     private boolean itemPressed = false;
@@ -134,7 +134,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     private void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
-            this.runOnUiThread(new ListUpdateTask(this, list, itemAdapter, sharedText));
+            this.runOnUiThread(new ListUpdateTask(this, sharedText));
         }
     }
 

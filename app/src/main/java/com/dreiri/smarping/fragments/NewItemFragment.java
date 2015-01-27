@@ -33,9 +33,7 @@ public class NewItemFragment extends Fragment {
                         ItemAdapter adapter = listActivity.itemAdapter;
                         EditText editTextNewItem = (EditText) v;
                         String itemName = editTextNewItem.getText().toString();
-                        listActivity.runOnUiThread(new ListUpdateTask(getActivity(), list, adapter, itemName));
-                        listActivity.scrollToTop();
-                        editTextNewItem.setText("");
+                        listActivity.runOnUiThread(new ListUpdateTask(listActivity, itemName));
                     }
                     return true;
                 } else {
