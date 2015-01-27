@@ -30,6 +30,7 @@ import com.dreiri.smarping.models.List;
 import com.dreiri.smarping.persistence.PersistenceManager;
 import com.dreiri.smarping.services.LocationService;
 import com.dreiri.smarping.utils.EditItemDialogListener;
+import com.dreiri.smarping.utils.ListUpdateTask;
 import com.dreiri.smarping.utils.MethodsOnAndroidVersionsUnification;
 import com.dreiri.smarping.utils.ResultCallback;
 import com.dreiri.smarping.utils.SimpleCallback;
@@ -77,6 +78,13 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             }
         });
         backgroundContainer = (BackgroundContainer) findViewById(R.id.listViewBackground);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
+            handleSendText(intent);
+        }
     }
 
     @Override
@@ -113,18 +121,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         return true;
     }
 
-    public void updateMenu() {
-        int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
-        MenuItem item = menu.findItem(R.id.action_delete);
-        if (item.isVisible() && checkedIndexes.length < 1) {
-            item.setVisible(false);
-            this.invalidateOptionsMenu();
-        } else if (!item.isVisible() && checkedIndexes.length >= 1) {
-            item.setVisible(true);
-            this.invalidateOptionsMenu();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -138,6 +134,25 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                     imm.toggleSoftInputFromWindow(listView.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
                 }
             }
+        }
+    }
+
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            this.runOnUiThread(new ListUpdateTask(this, list, itemAdapter, sharedText));
+        }
+    }
+
+    public void updateMenu() {
+        int[] checkedIndexes = itemAdapter.getIndexesOfCheckedItems();
+        MenuItem item = menu.findItem(R.id.action_delete);
+        if (item.isVisible() && checkedIndexes.length < 1) {
+            item.setVisible(false);
+            this.invalidateOptionsMenu();
+        } else if (!item.isVisible() && checkedIndexes.length >= 1) {
+            item.setVisible(true);
+            this.invalidateOptionsMenu();
         }
     }
 
