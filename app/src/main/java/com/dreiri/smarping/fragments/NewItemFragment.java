@@ -27,14 +27,16 @@ public class NewItemFragment extends Fragment {
             @Override
             public boolean onKey(final View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
-                    EditText editTextNewItem = (EditText) v;
-                    ListActivity listActivity = (ListActivity) getActivity();
-                    List list = listActivity.list;
-                    ItemAdapter adapter = listActivity.itemAdapter;
-                    String itemName = editTextNewItem.getText().toString();
-                    listActivity.runOnUiThread(new ListUpdateTask(getActivity(), list, adapter, itemName));
-                    listActivity.scrollToTop();
-                    editTextNewItem.setText("");
+                    if (getActivity() != null) {
+                        ListActivity listActivity = (ListActivity) getActivity();
+                        List list = listActivity.list;
+                        ItemAdapter adapter = listActivity.itemAdapter;
+                        EditText editTextNewItem = (EditText) v;
+                        String itemName = editTextNewItem.getText().toString();
+                        listActivity.runOnUiThread(new ListUpdateTask(getActivity(), list, adapter, itemName));
+                        listActivity.scrollToTop();
+                        editTextNewItem.setText("");
+                    }
                     return true;
                 } else {
                     return false;
