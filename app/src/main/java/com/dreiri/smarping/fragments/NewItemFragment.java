@@ -9,16 +9,12 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.dreiri.smarping.R;
 import com.dreiri.smarping.activities.ListActivity;
 import com.dreiri.smarping.adapters.ItemAdapter;
-import com.dreiri.smarping.exceptions.AlreadyExistsException;
-import com.dreiri.smarping.exceptions.NullValueException;
-import com.dreiri.smarping.models.Item;
 import com.dreiri.smarping.models.List;
-import com.dreiri.smarping.persistence.PersistenceManager;
+import com.dreiri.smarping.utils.ListUpdateTask;
 
 public class NewItemFragment extends Fragment {
 
@@ -36,7 +32,7 @@ public class NewItemFragment extends Fragment {
                     List list = listActivity.list;
                     ItemAdapter adapter = listActivity.itemAdapter;
                     String itemName = editTextNewItem.getText().toString();
-                    listActivity.runOnUiThread(new ListUpdateTask(list, adapter, itemName));
+                    listActivity.runOnUiThread(new ListUpdateTask(getActivity(), list, adapter, itemName));
                     listActivity.scrollToTop();
                     editTextNewItem.setText("");
                     return true;
@@ -46,35 +42,6 @@ public class NewItemFragment extends Fragment {
             }
         });
         return layout;
-    }
-
-    private class ListUpdateTask implements Runnable {
-
-        private List list;
-        private ItemAdapter adapter;
-        private String itemName;
-
-        public ListUpdateTask(List list, ItemAdapter adapter, String itemName) {
-            this.list = list;
-            this.adapter = adapter;
-            this.itemName = itemName;
-        }
-
-        @Override
-        public void run() {
-            try {
-                Item item = new Item(itemName);
-                list.add(item);
-            } catch (NullValueException e) {
-                Toast.makeText(getActivity(), R.string.toast_null_value, Toast.LENGTH_SHORT).show();
-            } catch (AlreadyExistsException e) {
-                Toast.makeText(getActivity(), R.string.toast_already_exists, Toast.LENGTH_SHORT).show();
-            }
-            adapter.refreshWithNewData(list);
-            PersistenceManager persistenceManager = new PersistenceManager(getActivity());
-            persistenceManager.saveList(list);
-        }
-
     }
 
 }
