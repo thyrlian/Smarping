@@ -1,6 +1,6 @@
 # Smarping
 
-[![Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.dreiri.smarping)
+[![Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.basgeekball.smarping)
 [![Build Status](https://travis-ci.org/thyrlian/Smarping.svg?branch=master)](https://travis-ci.org/thyrlian/Smarping)
 
 Smart shopping list benefits from machine learning

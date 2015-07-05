@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragmentAddNewItem"
-        android:name="com.dreiri.smarping.fragments.NewItemFragment"
+        android:name="com.basgeekball.smarping.fragments.NewItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/list_row_margin_to_side"
@@ -15,7 +15,7 @@
         android:layout_marginBottom="@dimen/list_row_margin_to_other" >
     </fragment>
 
-    <com.dreiri.smarping.views.BackgroundContainer
+    <com.basgeekball.smarping.views.BackgroundContainer
         android:id="@+id/listViewBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,6 +33,6 @@
             android:listSelector="@color/gray" >
         </ListView>
 
-    </com.dreiri.smarping.views.BackgroundContainer>
+    </com.basgeekball.smarping.views.BackgroundContainer>
     
 </LinearLayout>
