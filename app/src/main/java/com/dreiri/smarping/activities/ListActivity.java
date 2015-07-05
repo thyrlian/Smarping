@@ -68,15 +68,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         itemAdapter = new ItemAdapter(this, list, onTouchListener);
         listView.setAdapter(itemAdapter);
         editTextNewItem = (EditText) findViewById(R.id.editTextNewItem);
-        editTextNewItem.setOnTouchListener(new DrawableRightOnTouchListener(editTextNewItem) {
-            @Override
-            public boolean onDrawableTouch(MotionEvent event) {
-                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                startActivityForResult(intent, REQUEST_SPEECH);
-                return false;
-            }
-        });
+        setupVoiceRecognitionIfAvailable(editTextNewItem);
         backgroundContainer = (BackgroundContainer) findViewById(R.id.listViewBackground);
 
         Intent intent = getIntent();
@@ -172,6 +164,22 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         itemAdapter.refreshWithNewData(list);
         PersistenceManager persistenceManager = new PersistenceManager(this);
         persistenceManager.saveList(list);
+    }
+
+    private void setupVoiceRecognitionIfAvailable(EditText editText) {
+        final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            editText.setOnTouchListener(new DrawableRightOnTouchListener(editText) {
+                @Override
+                public boolean onDrawableTouch(MotionEvent event) {
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    startActivityForResult(intent, REQUEST_SPEECH);
+                    return false;
+                }
+            });
+        } else {
+            editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
     }
 
     private void setLocation() {
