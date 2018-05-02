@@ -5,6 +5,10 @@
 
 Smart shopping list benefits from machine learning
 
+## Privacy Policy
+
+All data collected by the application is only stored locally on the device, you can remove them at any time either by remove the items inside the application, or uninstall the application.
+
 ## License
 
 Copyright (c) 2014 Jing Li. See the LICENSE file for license rights and limitations (MIT).
