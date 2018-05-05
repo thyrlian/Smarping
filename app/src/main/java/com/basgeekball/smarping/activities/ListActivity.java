@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -47,7 +46,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     public ItemAdapter itemAdapter;
     public EditText editTextNewItem;
     private Menu menu;
-    private Location location = null;
     private boolean swiping = false;
     private boolean itemPressed = false;
     private HashMap<Long, Integer> itemIdTopMap = new HashMap<Long, Integer>();
@@ -176,10 +174,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         } else {
             editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
-    }
-
-    public Location getLocation() {
-        return location;
     }
 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
