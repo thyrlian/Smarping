@@ -19,23 +19,20 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.basgeekball.smarping.R;
 import com.basgeekball.smarping.adapters.ItemAdapter;
 import com.basgeekball.smarping.exceptions.AlreadyExistsException;
-import com.basgeekball.smarping.exceptions.LocationServicesNotAvailableException;
 import com.basgeekball.smarping.exceptions.NullValueException;
 import com.basgeekball.smarping.fragments.EditItemDialogFragment;
 import com.basgeekball.smarping.models.Item;
 import com.basgeekball.smarping.models.List;
 import com.basgeekball.smarping.persistence.PersistenceManager;
-import com.basgeekball.smarping.services.LocationService;
 import com.basgeekball.smarping.utils.EditItemDialogListener;
 import com.basgeekball.smarping.utils.ListUpdateTask;
 import com.basgeekball.smarping.utils.MethodsOnAndroidVersionsUnification;
-import com.basgeekball.smarping.utils.ResultCallback;
 import com.basgeekball.smarping.utils.SimpleCallback;
 import com.basgeekball.smarping.views.BackgroundContainer;
 import com.basgeekball.smarping.views.DrawableRightOnTouchListener;
-import com.basgeekball.smarping.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +79,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
     @Override
     protected void onResume() {
         super.onResume();
-        setLocation();
     }
 
     @Override
@@ -179,20 +175,6 @@ public class ListActivity extends Activity implements EditItemDialogListener {
             });
         } else {
             editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
-    }
-
-    private void setLocation() {
-        try {
-            LocationService locationService = new LocationService(this, new ResultCallback<Location>() {
-                @Override
-                public void execute(Location location) {
-                    ListActivity.this.location = location;
-                }
-            });
-            locationService.connect();
-        } catch (LocationServicesNotAvailableException e) {
-            this.location = null;
         }
     }
 

@@ -1,9 +1,9 @@
 package com.basgeekball.smarping.models;
 
+import com.basgeekball.smarping.exceptions.AlreadyExistsException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.basgeekball.smarping.exceptions.AlreadyExistsException;
 
 public class List {
 
