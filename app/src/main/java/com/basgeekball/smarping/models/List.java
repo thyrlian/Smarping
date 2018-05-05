@@ -119,11 +119,7 @@ public class List {
     }
 
     public boolean isEmpty() {
-        if (size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return size() == 0;
     }
 
     public Item get(int index) {
@@ -167,7 +163,7 @@ public class List {
     }
 
     private interface Callback {
-        public boolean execute(Item item, int index);
+        boolean execute(Item item, int index);
     }
 
 }

@@ -9,6 +9,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -41,7 +42,7 @@ public class EditItemDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         View view = View.inflate(getActivity(), R.layout.dialog_edit_item, null);
-        editTextItemName = (EditText) view.findViewById(R.id.itemName);
+        editTextItemName = view.findViewById(R.id.itemName);
         editTextItemName.setText(itemName);
         editTextItemName.setSelection(editTextItemName.length());
         editTextItemName.requestFocus();
@@ -69,7 +70,10 @@ public class EditItemDialogFragment extends DialogFragment {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
                     updateItem();
                     dismiss();
-                    getActivity().getCurrentFocus().clearFocus();
+                    View currentFocus = getActivity().getCurrentFocus();
+                    if (currentFocus != null) {
+                        currentFocus.clearFocus();
+                    }
                     hideKeyboard();
                     return true;
                 } else {
@@ -79,7 +83,10 @@ public class EditItemDialogFragment extends DialogFragment {
         });
 
         AlertDialog dialog = builder.create();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         return dialog;
     }
 
@@ -93,7 +100,9 @@ public class EditItemDialogFragment extends DialogFragment {
 
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editTextItemName.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(editTextItemName.getWindowToken(), 0);
+        }
     }
 
 }

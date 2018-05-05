@@ -1,5 +1,6 @@
 package com.basgeekball.smarping.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ public class ItemAdapter extends BaseAdapter {
     private ListActivity activity;
     private LayoutInflater inflater;
     private View.OnTouchListener onTouchListener;
-    private ViewHolder viewHolder;
     private ArrayList<Boolean> checkBoxStates = new ArrayList<Boolean>();
 
     private class ViewHolder {
@@ -61,13 +61,15 @@ public class ItemAdapter extends BaseAdapter {
         return true;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.fragment_list_row, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName);
-            viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+            viewHolder.textViewItemName = convertView.findViewById(R.id.textViewItemName);
+            viewHolder.checkBox = convertView.findViewById(R.id.checkBox);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -81,7 +83,7 @@ public class ItemAdapter extends BaseAdapter {
         viewHolder.checkBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
+                CheckBox checkBox = v.findViewById(R.id.checkBox);
                 checkBoxStates.set(position, checkBox.isChecked());
                 activity.updateMenu();
             }

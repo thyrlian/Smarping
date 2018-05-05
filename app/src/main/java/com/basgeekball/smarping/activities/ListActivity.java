@@ -1,5 +1,6 @@
 package com.basgeekball.smarping.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -56,15 +57,17 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ActionBar actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+        }
         PersistenceManager persistenceManager = new PersistenceManager(this);
         list = persistenceManager.readList();
-        listView = (ListView) findViewById(R.id.listView);
+        listView = findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this, list, onTouchListener);
         listView.setAdapter(itemAdapter);
-        editTextNewItem = (EditText) findViewById(R.id.editTextNewItem);
+        editTextNewItem = findViewById(R.id.editTextNewItem);
         setupVoiceRecognitionIfAvailable(editTextNewItem);
-        backgroundContainer = (BackgroundContainer) findViewById(R.id.listViewBackground);
+        backgroundContainer = findViewById(R.id.listViewBackground);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -117,7 +120,9 @@ public class ListActivity extends Activity implements EditItemDialogListener {
                     editTextNewItem.setText(text.get(0));
                     editTextNewItem.setSelection(editTextNewItem.getText().length());
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInputFromWindow(listView.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+                    if (imm != null) {
+                        imm.toggleSoftInputFromWindow(listView.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+                    }
                 }
             }
         }
@@ -160,6 +165,7 @@ public class ListActivity extends Activity implements EditItemDialogListener {
         persistenceManager.saveList(list);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupVoiceRecognitionIfAvailable(EditText editText) {
         final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         if (intent.resolveActivity(getPackageManager()) != null) {
